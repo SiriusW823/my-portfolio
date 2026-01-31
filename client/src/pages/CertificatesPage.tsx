@@ -1,0 +1,78 @@
+import { motion } from 'framer-motion';
+import { Link } from 'wouter';
+import { portfolioData } from '@/data/portfolioData';
+import { ArrowLeft, Award, ExternalLink } from 'lucide-react';
+
+export default function CertificatesPage() {
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] text-white">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-gray-800/50">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+          <Link href="/">
+            <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
+              <ArrowLeft className="w-5 h-5" />
+              <span className="font-mono text-sm">Back to Home</span>
+            </a>
+          </Link>
+          <nav className="flex items-center gap-6">
+            <Link href="/projects"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">Projects</a></Link>
+            <Link href="/competitions"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">Competitions</a></Link>
+            <Link href="/courses"><a className="text-gray-500 hover:text-green-400 transition-colors text-sm font-mono">Courses</a></Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* Content */}
+      <main className="pt-24 pb-16 px-6">
+        <div className="max-w-5xl mx-auto">
+          {/* Page Title */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex items-center gap-4 mb-12"
+          >
+            <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
+              <Award className="w-8 h-8 text-purple-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">Certificates</h1>
+              <p className="text-gray-500 font-mono text-sm mt-1">// {portfolioData.certificates.length} entries</p>
+            </div>
+          </motion.div>
+
+          {/* Certificates List */}
+          <div className="space-y-6">
+            {portfolioData.certificates.map((cert, index) => (
+              <motion.div
+                key={cert.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + index * 0.1, duration: 0.5 }}
+                className="group p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-purple-500/30 transition-all"
+              >
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
+                        {cert.name}
+                      </h3>
+                      {cert.link && cert.link !== '#' && (
+                        <a href={cert.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-purple-400 transition-colors">
+                          <ExternalLink className="w-4 h-4" />
+                        </a>
+                      )}
+                    </div>
+                    <p className="text-gray-400 text-sm">{cert.issuer}</p>
+                    <p className="text-gray-500 text-sm font-mono mt-1">{cert.date}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,19 +1,102 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { Link } from 'wouter';
 import { portfolioData, socialLinks } from '@/data/portfolioData';
-import { 
-  ChevronDown, 
-  ExternalLink, 
-  Award, 
-  BookOpen, 
-  Trophy, 
+import {
+  ChevronDown,
+  Award,
+  BookOpen,
+  Trophy,
   FolderKanban,
   Github,
   Instagram,
   Twitter,
-  Mail,
-  MapPin
+  MapPin,
+  Menu,
+  X
 } from 'lucide-react';
+
+// ============================================
+// TOP NAVIGATION BAR
+// ============================================
+function TopNavBar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navItems = [
+    { href: '/projects', label: 'Projects', color: 'hover:text-cyan-400' },
+    { href: '/competitions', label: 'Competitions', color: 'hover:text-yellow-400' },
+    { href: '/certificates', label: 'Certificates', color: 'hover:text-purple-400' },
+    { href: '/courses', label: 'Courses', color: 'hover:text-green-400' },
+  ];
+
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-[#0a0a0a]/95 backdrop-blur-md border-b border-gray-800/50' : 'bg-transparent'
+    }`}>
+      <div className="max-w-6xl mx-auto px-6 py-4">
+        <div className="flex items-center justify-between">
+          {/* Logo / Name */}
+          <Link href="/">
+            <a className="text-xl font-bold text-white hover:text-cyan-400 transition-colors font-mono">
+              {portfolioData.hero.name.split(' ')[0]}
+            </a>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-8">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href}>
+                <a className={`text-sm font-mono text-gray-400 ${item.color} transition-colors`}>
+                  {item.label}
+                </a>
+              </Link>
+            ))}
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden mt-4 pb-4 border-t border-gray-800/50 pt-4"
+          >
+            <div className="flex flex-col gap-4">
+              {navItems.map((item) => (
+                <Link key={item.href} href={item.href}>
+                  <a 
+                    className={`text-sm font-mono text-gray-400 ${item.color} transition-colors`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.label}
+                  </a>
+                </Link>
+              ))}
+            </div>
+          </motion.nav>
+        )}
+      </div>
+    </header>
+  );
+}
 
 // ============================================
 // ANIMATED BACKGROUND COMPONENT (Pure CSS + Framer Motion)
@@ -29,7 +112,7 @@ function AnimatedBackground() {
         `,
         backgroundSize: '60px 60px',
       }} />
-      
+
       {/* Floating Particles */}
       <div className="absolute inset-0">
         {Array.from({ length: 50 }).map((_, i) => (
@@ -54,7 +137,7 @@ function AnimatedBackground() {
           />
         ))}
       </div>
-      
+
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
       <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-cyan-500/5 to-transparent" />
@@ -93,7 +176,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-[#0a0a0a]">
       <AnimatedBackground />
-      
+
       <div className="relative z-10 text-center px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -106,7 +189,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
               {portfolioData.hero.name}
             </span>
           </h1>
-          
+
           {/* Title */}
           <motion.p
             className="text-xl md:text-2xl text-gray-400 font-light mb-6"
@@ -116,7 +199,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
           >
             {portfolioData.hero.title}
           </motion.p>
-          
+
           {/* Tagline */}
           <motion.p
             className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto font-mono"
@@ -228,58 +311,58 @@ function AboutSection() {
 }
 
 // ============================================
-// NAVIGATION HUB SECTION
+// NAVIGATION HUB SECTION (Links to separate pages)
 // ============================================
 interface HubCardProps {
   title: string;
   icon: React.ReactNode;
   count: number;
-  onClick: () => void;
+  href: string;
   color: string;
   delay: number;
 }
 
-function HubCard({ title, icon, count, onClick, color, delay }: HubCardProps) {
+function HubCard({ title, icon, count, href, color, delay }: HubCardProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
 
   return (
-    <motion.button
+    <motion.div
       ref={ref}
-      onClick={onClick}
-      className={`group relative p-8 rounded-2xl border-2 bg-gray-900/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${color}`}
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ delay, duration: 0.6 }}
-      whileHover={{ y: -5 }}
-      whileTap={{ scale: 0.98 }}
     >
-      <div className="flex flex-col items-center text-center gap-4">
-        <div className="p-4 rounded-xl bg-gray-800/50 group-hover:bg-gray-800 transition-colors">
-          {icon}
-        </div>
-        <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
-          {title}
-        </h3>
-        <span className="text-3xl font-black text-gray-600 group-hover:text-cyan-500 transition-colors">
-          {count}
-        </span>
-      </div>
-      {/* Glow Effect */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-gradient-to-t from-cyan-500/10 to-transparent" />
-    </motion.button>
+      <Link href={href}>
+        <a className={`group relative block p-8 rounded-2xl border-2 bg-gray-900/50 backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] ${color}`}>
+          <div className="flex flex-col items-center text-center gap-4">
+            <div className="p-4 rounded-xl bg-gray-800/50 group-hover:bg-gray-800 transition-colors">
+              {icon}
+            </div>
+            <h3 className="text-xl font-bold text-white group-hover:text-cyan-300 transition-colors">
+              {title}
+            </h3>
+            <span className="text-3xl font-black text-gray-600 group-hover:text-cyan-500 transition-colors">
+              {count}
+            </span>
+          </div>
+          {/* Glow Effect */}
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none bg-gradient-to-t from-cyan-500/10 to-transparent" />
+        </a>
+      </Link>
+    </motion.div>
   );
 }
 
-function NavigationHub({ onNavigate }: { onNavigate: (id: string) => void }) {
+function NavigationHub() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   const hubItems = [
-    { id: 'projects', title: 'Projects', icon: <FolderKanban className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
-    { id: 'competitions', title: 'Competitions', icon: <Trophy className="w-8 h-8 text-yellow-400" />, count: portfolioData.competitions.length, color: 'border-yellow-500/30 hover:border-yellow-400' },
-    { id: 'certificates', title: 'Certificates', icon: <Award className="w-8 h-8 text-purple-400" />, count: portfolioData.certificates.length, color: 'border-purple-500/30 hover:border-purple-400' },
-    { id: 'courses', title: 'Courses', icon: <BookOpen className="w-8 h-8 text-green-400" />, count: portfolioData.courses.length, color: 'border-green-500/30 hover:border-green-400' },
+    { href: '/projects', title: 'Projects', icon: <FolderKanban className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
+    { href: '/competitions', title: 'Competitions', icon: <Trophy className="w-8 h-8 text-yellow-400" />, count: portfolioData.competitions.length, color: 'border-yellow-500/30 hover:border-yellow-400' },
+    { href: '/certificates', title: 'Certificates', icon: <Award className="w-8 h-8 text-purple-400" />, count: portfolioData.certificates.length, color: 'border-purple-500/30 hover:border-purple-400' },
+    { href: '/courses', title: 'Courses', icon: <BookOpen className="w-8 h-8 text-green-400" />, count: portfolioData.courses.length, color: 'border-green-500/30 hover:border-green-400' },
   ];
 
   return (
@@ -298,164 +381,14 @@ function NavigationHub({ onNavigate }: { onNavigate: (id: string) => void }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {hubItems.map((item, index) => (
             <HubCard
-              key={item.id}
+              key={item.href}
               {...item}
-              onClick={() => onNavigate(item.id)}
               delay={0.2 + index * 0.1}
             />
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-// ============================================
-// CONTENT LIST SECTION COMPONENT
-// ============================================
-interface ContentListProps<T> {
-  id: string;
-  title: string;
-  icon: React.ReactNode;
-  items: T[];
-  renderItem: (item: T, index: number) => React.ReactNode;
-}
-
-function ContentListSection<T extends { id: number }>({ id, title, icon, items, renderItem }: ContentListProps<T>) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  return (
-    <section ref={ref} id={id} className="py-20 px-6 bg-[#0a0a0a] border-t border-gray-800/50">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="flex items-center gap-4 mb-10"
-        >
-          <div className="p-3 rounded-xl bg-gray-800/50">
-            {icon}
-          </div>
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">{title}</h2>
-            <p className="text-gray-500 font-mono text-xs mt-1">// {items.length} entries</p>
-          </div>
-        </motion.div>
-
-        <ul className="space-y-4">
-          {items.map((item, index) => (
-            <motion.li
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1 + index * 0.1, duration: 0.5 }}
-            >
-              {renderItem(item, index)}
-            </motion.li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-// ============================================
-// ITEM CARD COMPONENTS
-// ============================================
-function ProjectItem({ project }: { project: typeof portfolioData.projects[0] }) {
-  return (
-    <div className="group p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-cyan-500/30 transition-all">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
-              {project.title}
-            </h3>
-            {project.link !== '#' && (
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors">
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            )}
-          </div>
-          <p className="text-gray-400 text-sm mb-3">{project.description}</p>
-          <div className="flex flex-wrap gap-2">
-            {project.techStack.map((tech) => (
-              <span key={tech} className="px-2 py-1 text-xs font-mono bg-gray-800/60 text-gray-400 rounded">
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CompetitionItem({ competition }: { competition: typeof portfolioData.competitions[0] }) {
-  return (
-    <div className="group p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-yellow-500/30 transition-all">
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-3 mb-2">
-            <h3 className="text-lg font-bold text-white group-hover:text-yellow-300 transition-colors">
-              {competition.name}
-            </h3>
-            <span className="px-2 py-1 text-xs font-mono bg-yellow-900/30 text-yellow-400 rounded border border-yellow-500/30">
-              {competition.award}
-            </span>
-          </div>
-          <p className="text-gray-400 text-sm">{competition.description}</p>
-        </div>
-        <span className="text-gray-500 font-mono text-sm shrink-0">{competition.year}</span>
-      </div>
-    </div>
-  );
-}
-
-function CertificateItem({ certificate }: { certificate: typeof portfolioData.certificates[0] }) {
-  return (
-    <div className="group p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-purple-500/30 transition-all">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <div>
-          <h3 className="text-lg font-bold text-white group-hover:text-purple-300 transition-colors">
-            {certificate.name}
-          </h3>
-          <p className="text-gray-400 text-sm">{certificate.issuer}</p>
-        </div>
-        <div className="flex items-center gap-4 text-gray-500 font-mono text-xs">
-          <span>{certificate.date}</span>
-          {certificate.credentialId && (
-            <span className="text-gray-600">ID: {certificate.credentialId}</span>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function CourseItem({ course }: { course: typeof portfolioData.courses[0] }) {
-  return (
-    <div className="group p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-green-500/30 transition-all">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-3 mb-1">
-            <h3 className="text-lg font-bold text-white group-hover:text-green-300 transition-colors">
-              {course.name}
-            </h3>
-            <span className={`px-2 py-0.5 text-xs font-mono rounded ${
-              course.status === 'completed' 
-                ? 'bg-green-900/30 text-green-400 border border-green-500/30'
-                : 'bg-blue-900/30 text-blue-400 border border-blue-500/30'
-            }`}>
-              {course.status === 'completed' ? 'Completed' : 'In Progress'}
-            </span>
-          </div>
-          <p className="text-gray-400 text-sm">{course.institution}</p>
-        </div>
-        <span className="text-gray-400 font-mono text-sm">Grade: {course.grade}</span>
-      </div>
-    </div>
   );
 }
 
@@ -473,9 +406,9 @@ function Footer() {
               <MapPin className="w-4 h-4" /> Taiwan
             </p>
           </div>
-          
+
           <div className="flex items-center gap-4">
-            <a href={socialLinks.github} target="_blank" rel="noopener noreferrer" 
+            <a href={socialLinks.github} target="_blank" rel="noopener noreferrer"
                className="p-3 rounded-lg bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-700/50 transition-all">
               <Github className="w-5 h-5" />
             </a>
@@ -487,13 +420,10 @@ function Footer() {
                className="p-3 rounded-lg bg-gray-800/50 text-gray-400 hover:text-cyan-400 hover:bg-gray-700/50 transition-all">
               <Twitter className="w-5 h-5" />
             </a>
-            <a href={`mailto:${socialLinks.email}`}
-               className="p-3 rounded-lg bg-gray-800/50 text-gray-400 hover:text-green-400 hover:bg-gray-700/50 transition-all">
-              <Mail className="w-5 h-5" />
-            </a>
+
           </div>
         </div>
-        
+
         <div className="mt-12 pt-8 border-t border-gray-800/50 text-center">
           <p className="text-gray-600 text-sm font-mono">
             © {new Date().getFullYear()} {portfolioData.hero.name}. Built with React & Tailwind CSS.
@@ -519,15 +449,13 @@ export default function Home() {
     aboutRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
   if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+      {/* Top Navigation Bar */}
+      <TopNavBar />
+
       {/* Section 1: Hero (Full Height) */}
       <HeroSection onScrollClick={scrollToAbout} />
 
@@ -536,44 +464,12 @@ export default function Home() {
         <AboutSection />
       </div>
 
-      {/* Section 3: Navigation Hub */}
-      <NavigationHub onNavigate={scrollToSection} />
-
-      {/* Section 4: Detailed Content Lists */}
-      <ContentListSection
-        id="projects"
-        title="Projects"
-        icon={<FolderKanban className="w-6 h-6 text-cyan-400" />}
-        items={portfolioData.projects}
-        renderItem={(project) => <ProjectItem project={project} />}
-      />
-
-      <ContentListSection
-        id="competitions"
-        title="Competitions"
-        icon={<Trophy className="w-6 h-6 text-yellow-400" />}
-        items={portfolioData.competitions}
-        renderItem={(competition) => <CompetitionItem competition={competition} />}
-      />
-
-      <ContentListSection
-        id="certificates"
-        title="Certificates"
-        icon={<Award className="w-6 h-6 text-purple-400" />}
-        items={portfolioData.certificates}
-        renderItem={(certificate) => <CertificateItem certificate={certificate} />}
-      />
-
-      <ContentListSection
-        id="courses"
-        title="Courses"
-        icon={<BookOpen className="w-6 h-6 text-green-400" />}
-        items={portfolioData.courses}
-        renderItem={(course) => <CourseItem course={course} />}
-      />
+      {/* Section 3: Navigation Hub (Links to separate pages) */}
+      <NavigationHub />
 
       {/* Footer */}
       <Footer />
     </div>
   );
 }
+

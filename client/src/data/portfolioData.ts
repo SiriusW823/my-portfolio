@@ -52,7 +52,7 @@ export interface Course {
 
 export const portfolioData = {
   hero: {
-    name: "Your Name",
+    name: "SIRIUS",
     title: "Student Developer & Security Researcher",
     tagline: "Passionate about cybersecurity, quantum computing, and building innovative solutions",
   } as HeroData,
@@ -288,3 +288,4 @@ export const activities = [
   { id: 3, title: "Open Source Contributor", description: "Contributing to open-source projects.", icon: "Code" },
   { id: 4, title: "Tech Enthusiast", description: "Continuously learning new technologies.", icon: "Zap" },
 ];
+
