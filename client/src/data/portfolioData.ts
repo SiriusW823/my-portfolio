@@ -1,7 +1,14 @@
 // ============================================
 // PORTFOLIO DATA - Student Portfolio
 // Clean, content-focused structure for academic achievements
+// Bilingual Support (EN/ZH)
 // ============================================
+
+// Bilingual text type
+export interface BilingualText {
+  en: string;
+  zh: string;
+}
 
 export interface HeroData {
   name: string;
@@ -17,7 +24,7 @@ export interface AboutData {
 export interface Project {
   id: number;
   title: string;
-  description: string;
+  description: BilingualText;
   techStack: string[];
   link: string;
 }
@@ -25,9 +32,9 @@ export interface Project {
 export interface Competition {
   id: number;
   name: string;
-  award: string;
+  award: BilingualText;
   year: string;
-  description: string;
+  description: BilingualText;
 }
 
 export interface Certificate {
@@ -36,6 +43,7 @@ export interface Certificate {
   issuer: string;
   date: string;
   credentialId?: string;
+  link?: string;
 }
 
 export interface Course {
@@ -83,14 +91,20 @@ learning and pushing the boundaries of what's possible through code and innovati
     {
       id: 1,
       title: "Audio Reactive Sphere",
-      description: "Real-time 3D audio visualization using Three.js. Captures live microphone input and creates stunning particle animations that react to sound with customizable shapes and presets.",
+      description: {
+        en: "Real-time 3D audio visualization using Three.js. Captures live microphone input and creates stunning particle animations that react to sound with customizable shapes and presets.",
+        zh: "使用 Three.js 開發的即時 3D 音訊視覺化專案。透過麥克風捕捉即時音訊，創造隨音樂律動的粒子動畫，支援多種形狀與預設效果。",
+      },
       techStack: ["JavaScript", "Three.js", "Web Audio API", "WebGL"],
       link: "https://github.com/SiriusW823/Audio-Reactive-Sphere",
     },
     {
       id: 2,
       title: "台灣盃火箭競賽 Rocket Taiwan Cup",
-      description: "參與台灣盃火箭競賽，設計與製作模型火箭，學習火箭動力學、空氣動力學及飛行控制相關知識。",
+      description: {
+        en: "Participated in Rocket Taiwan Cup, designing and building model rockets. Learned rocket dynamics, aerodynamics, and flight control systems.",
+        zh: "參與台灣盃火箭競賽，設計與製作模型火箭，學習火箭動力學、空氣動力學及飛行控制相關知識。",
+      },
       techStack: ["Aerospace Engineering", "Rocket Design", "Competition"],
       link: "#",
     },
@@ -100,30 +114,54 @@ learning and pushing the boundaries of what's possible through code and innovati
     {
       id: 1,
       name: "AlpacaHack Round 6",
-      award: "Top Performer - PWN Category",
+      award: {
+        en: "Top Performer - PWN Category",
+        zh: "PWN 類別優秀表現",
+      },
       year: "2025",
-      description: "Solved advanced binary exploitation challenges including heap overflow, UAF, and format string vulnerabilities.",
+      description: {
+        en: "Solved advanced binary exploitation challenges including heap overflow, UAF, and format string vulnerabilities.",
+        zh: "成功解決進階二進位漏洞利用題目，包含堆積溢位、UAF 及格式化字串漏洞。",
+      },
     },
     {
       id: 2,
       name: "Science Fair - Quantum Computing",
-      award: "Excellence Award",
+      award: {
+        en: "Excellence Award",
+        zh: "優等獎",
+      },
       year: "2025",
-      description: "Research project on Quantum Reinforcement Learning for molecular generation and drug discovery applications.",
+      description: {
+        en: "Research project on Quantum Reinforcement Learning for molecular generation and drug discovery applications.",
+        zh: "量子強化學習研究專題，應用於分子生成與藥物探索。",
+      },
     },
     {
       id: 3,
       name: "HackTheBox Challenges",
-      award: "Active Participant",
+      award: {
+        en: "Active Participant",
+        zh: "積極參與者",
+      },
       year: "2024",
-      description: "Regular participation in CTF-style machine challenges, focusing on penetration testing and exploitation.",
+      description: {
+        en: "Regular participation in CTF-style machine challenges, focusing on penetration testing and exploitation.",
+        zh: "定期參與 CTF 風格的滲透測試挑戰，專注於漏洞利用技術。",
+      },
     },
     {
       id: 4,
       name: "NCKUCTF Competition",
-      award: "Finalist",
+      award: {
+        en: "Finalist",
+        zh: "決賽入圍",
+      },
       year: "2024",
-      description: "National-level cybersecurity competition covering web security, cryptography, and binary exploitation.",
+      description: {
+        en: "National-level cybersecurity competition covering web security, cryptography, and binary exploitation.",
+        zh: "全國性資安競賽，涵蓋網頁安全、密碼學及二進位漏洞利用。",
+      },
     },
   ] as Competition[],
 

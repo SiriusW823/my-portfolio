@@ -2,6 +2,8 @@ import { useRef, useEffect, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'wouter';
 import { portfolioData, socialLinks } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageToggle from '@/components/LanguageToggle';
 import {
   ChevronDown,
   Award,
@@ -22,6 +24,7 @@ import {
 function TopNavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,10 +35,10 @@ function TopNavBar() {
   }, []);
 
   const navItems = [
-    { href: '/projects', label: 'Projects', color: 'hover:text-cyan-400' },
-    { href: '/competitions', label: 'Competitions', color: 'hover:text-yellow-400' },
-    { href: '/certificates', label: 'Certificates', color: 'hover:text-purple-400' },
-    { href: '/courses', label: 'Courses', color: 'hover:text-green-400' },
+    { href: '/projects', label: t.nav.projects, color: 'hover:text-cyan-400' },
+    { href: '/competitions', label: t.nav.competitions, color: 'hover:text-yellow-400' },
+    { href: '/certificates', label: t.nav.certificates, color: 'hover:text-purple-400' },
+    { href: '/courses', label: t.nav.courses, color: 'hover:text-green-400' },
   ];
 
   return (
@@ -60,15 +63,20 @@ function TopNavBar() {
                 </a>
               </Link>
             ))}
+            {/* Language Toggle */}
+            <LanguageToggle />
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          <div className="md:hidden flex items-center gap-3">
+            <LanguageToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -150,6 +158,7 @@ function AnimatedBackground() {
 // SCROLL INDICATOR COMPONENT
 // ============================================
 function ScrollIndicator({ onClick }: { onClick: () => void }) {
+  const { t } = useLanguage();
   return (
     <motion.button
       onClick={onClick}
@@ -158,7 +167,7 @@ function ScrollIndicator({ onClick }: { onClick: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.5, duration: 0.8 }}
     >
-      <span className="text-xs font-mono uppercase tracking-widest">Scroll for Intro</span>
+      <span className="text-xs font-mono uppercase tracking-widest">{t.hero.cta}</span>
       <motion.div
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
@@ -173,6 +182,7 @@ function ScrollIndicator({ onClick }: { onClick: () => void }) {
 // HERO SECTION (Full Height)
 // ============================================
 function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
+  const { t } = useLanguage();
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-[#0a0a0a]">
       <AnimatedBackground />
@@ -186,7 +196,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
           {/* Name */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight mb-4">
             <span className="bg-gradient-to-r from-white via-cyan-200 to-cyan-400 bg-clip-text text-transparent">
-              {portfolioData.hero.name}
+              {t.hero.title}
             </span>
           </h1>
 
@@ -197,7 +207,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            {portfolioData.hero.title}
+            {t.hero.subtitle}
           </motion.p>
 
           {/* Tagline */}
@@ -207,7 +217,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6, duration: 0.8 }}
           >
-            {portfolioData.hero.tagline}
+            {t.hero.tagline}
           </motion.p>
         </motion.div>
       </div>
@@ -223,6 +233,7 @@ function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
 function AboutSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { t } = useLanguage();
 
   return (
     <section ref={ref} className="min-h-[80vh] py-24 px-6 bg-[#0a0a0a]">
@@ -234,7 +245,7 @@ function AboutSection() {
         >
           {/* Section Header */}
           <div className="mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">About Me</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{t.about.title}</h2>
             <div className="h-1 w-20 bg-gradient-to-r from-cyan-400 to-purple-500" />
           </div>
 
@@ -249,7 +260,7 @@ function AboutSection() {
             >
               <h3 className="text-lg font-semibold text-cyan-400 mb-4 font-mono">// Introduction</h3>
               <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-line">
-                {portfolioData.about.bio}
+                {t.about.bio}
               </p>
             </motion.div>
 
@@ -357,12 +368,13 @@ function HubCard({ title, icon, count, href, color, delay }: HubCardProps) {
 function NavigationHub() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const { t } = useLanguage();
 
   const hubItems = [
-    { href: '/projects', title: 'Projects', icon: <FolderKanban className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
-    { href: '/competitions', title: 'Competitions', icon: <Trophy className="w-8 h-8 text-yellow-400" />, count: portfolioData.competitions.length, color: 'border-yellow-500/30 hover:border-yellow-400' },
-    { href: '/certificates', title: 'Certificates', icon: <Award className="w-8 h-8 text-purple-400" />, count: portfolioData.certificates.length, color: 'border-purple-500/30 hover:border-purple-400' },
-    { href: '/courses', title: 'Courses', icon: <BookOpen className="w-8 h-8 text-green-400" />, count: portfolioData.courses.length, color: 'border-green-500/30 hover:border-green-400' },
+    { href: '/projects', title: t.nav.projects, icon: <FolderKanban className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
+    { href: '/competitions', title: t.nav.competitions, icon: <Trophy className="w-8 h-8 text-yellow-400" />, count: portfolioData.competitions.length, color: 'border-yellow-500/30 hover:border-yellow-400' },
+    { href: '/certificates', title: t.nav.certificates, icon: <Award className="w-8 h-8 text-purple-400" />, count: portfolioData.certificates.length, color: 'border-purple-500/30 hover:border-purple-400' },
+    { href: '/courses', title: t.nav.courses, icon: <BookOpen className="w-8 h-8 text-green-400" />, count: portfolioData.courses.length, color: 'border-green-500/30 hover:border-green-400' },
   ];
 
   return (

@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { portfolioData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageToggle from '@/components/LanguageToggle';
 import { ArrowLeft, Trophy } from 'lucide-react';
 
 export default function CompetitionsPage() {
+  const { language, t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
@@ -12,13 +16,14 @@ export default function CompetitionsPage() {
           <Link href="/">
             <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">Back to Home</span>
+              <span className="font-mono text-sm">{t.nav.backToHome}</span>
             </a>
           </Link>
           <nav className="flex items-center gap-6">
-            <Link href="/projects"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">Projects</a></Link>
-            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">Certificates</a></Link>
-            <Link href="/courses"><a className="text-gray-500 hover:text-green-400 transition-colors text-sm font-mono">Courses</a></Link>
+            <Link href="/projects"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.projects}</a></Link>
+            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.certificates}</a></Link>
+            <Link href="/courses"><a className="text-gray-500 hover:text-green-400 transition-colors text-sm font-mono">{t.nav.courses}</a></Link>
+            <LanguageToggle />
           </nav>
         </div>
       </header>
@@ -37,7 +42,7 @@ export default function CompetitionsPage() {
               <Trophy className="w-8 h-8 text-yellow-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Competitions</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{t.sections.competitions}</h1>
               <p className="text-gray-500 font-mono text-sm mt-1">// {portfolioData.competitions.length} entries</p>
             </div>
           </motion.div>
@@ -59,18 +64,18 @@ export default function CompetitionsPage() {
                         {comp.name}
                       </h3>
                       <span className={`px-2 py-1 text-xs font-mono rounded ${
-                        comp.award.includes('First') || comp.award.includes('Gold') 
+                        comp.award[language || 'en'].includes('First') || comp.award[language || 'en'].includes('Gold') || comp.award[language || 'en'].includes('第一') || comp.award[language || 'en'].includes('金')
                           ? 'bg-yellow-500/20 text-yellow-300'
-                          : comp.award.includes('Second') || comp.award.includes('Silver')
+                          : comp.award[language || 'en'].includes('Second') || comp.award[language || 'en'].includes('Silver') || comp.award[language || 'en'].includes('第二') || comp.award[language || 'en'].includes('銀')
                           ? 'bg-gray-400/20 text-gray-300'
                           : 'bg-amber-700/20 text-amber-400'
                       }`}>
-                        {comp.award}
+                        {comp.award[language || 'en']}
                       </span>
                     </div>
                     <p className="text-gray-500 text-sm font-mono">{comp.year}</p>
                     {comp.description && (
-                      <p className="text-gray-400 text-sm mt-2">{comp.description}</p>
+                      <p className="text-gray-400 text-sm mt-2">{comp.description[language || 'en']}</p>
                     )}
                   </div>
                 </div>

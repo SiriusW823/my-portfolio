@@ -1,9 +1,13 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { portfolioData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageToggle from '@/components/LanguageToggle';
 import { ArrowLeft, ExternalLink, FolderKanban } from 'lucide-react';
 
 export default function ProjectsPage() {
+  const { language, t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
       {/* Header */}
@@ -12,13 +16,14 @@ export default function ProjectsPage() {
           <Link href="/">
             <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">Back to Home</span>
+              <span className="font-mono text-sm">{t.nav.backToHome}</span>
             </a>
           </Link>
           <nav className="flex items-center gap-6">
-            <Link href="/competitions"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">Competitions</a></Link>
-            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">Certificates</a></Link>
-            <Link href="/courses"><a className="text-gray-500 hover:text-green-400 transition-colors text-sm font-mono">Courses</a></Link>
+            <Link href="/competitions"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">{t.nav.competitions}</a></Link>
+            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.certificates}</a></Link>
+            <Link href="/courses"><a className="text-gray-500 hover:text-green-400 transition-colors text-sm font-mono">{t.nav.courses}</a></Link>
+            <LanguageToggle />
           </nav>
         </div>
       </header>
@@ -37,7 +42,7 @@ export default function ProjectsPage() {
               <FolderKanban className="w-8 h-8 text-cyan-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Projects</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{t.sections.projects}</h1>
               <p className="text-gray-500 font-mono text-sm mt-1">// {portfolioData.projects.length} entries</p>
             </div>
           </motion.div>
@@ -64,7 +69,7 @@ export default function ProjectsPage() {
                         </a>
                       )}
                     </div>
-                    <p className="text-gray-400 text-sm mb-3">{project.description}</p>
+                    <p className="text-gray-400 text-sm mb-3">{project.description[language || 'en']}</p>
                     <div className="flex flex-wrap gap-2">
                       {project.techStack.map((tech) => (
                         <span key={tech} className="px-2 py-1 text-xs font-mono bg-gray-800/60 text-gray-400 rounded">

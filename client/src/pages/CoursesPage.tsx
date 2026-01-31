@@ -1,6 +1,8 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'wouter';
 import { portfolioData } from '@/data/portfolioData';
+import { useLanguage } from '@/context/LanguageContext';
+import LanguageToggle from '@/components/LanguageToggle';
 import { ArrowLeft, BookOpen, ExternalLink, X, FileText, Image } from 'lucide-react';
 import { useState } from 'react';
 
@@ -83,6 +85,7 @@ const CertificateModal = ({
 };
 
 export default function CoursesPage() {
+  const { t } = useLanguage();
   const [selectedCourse, setSelectedCourse] = useState<{ name: string; certificates: string[] } | null>(null);
 
   return (
@@ -93,13 +96,14 @@ export default function CoursesPage() {
           <Link href="/">
             <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
               <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">Back to Home</span>
+              <span className="font-mono text-sm">{t.nav.backToHome}</span>
             </a>
           </Link>
           <nav className="flex items-center gap-6">
-            <Link href="/projects"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">Projects</a></Link>
-            <Link href="/competitions"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">Competitions</a></Link>
-            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">Certificates</a></Link>
+            <Link href="/projects"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.projects}</a></Link>
+            <Link href="/competitions"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">{t.nav.competitions}</a></Link>
+            <Link href="/certificates"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.certificates}</a></Link>
+            <LanguageToggle />
           </nav>
         </div>
       </header>
@@ -118,7 +122,7 @@ export default function CoursesPage() {
               <BookOpen className="w-8 h-8 text-green-400" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">Courses</h1>
+              <h1 className="text-3xl md:text-4xl font-bold text-white">{t.sections.courses}</h1>
               <p className="text-gray-500 font-mono text-sm mt-1">// {portfolioData.courses.length} entries</p>
             </div>
           </motion.div>
