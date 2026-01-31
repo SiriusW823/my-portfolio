@@ -44,6 +44,7 @@ export interface Course {
   institution: string;
   grade: string;
   status: "completed" | "in-progress";
+  certificates?: string[]; // Array of certificate file paths
 }
 
 // ============================================
@@ -181,38 +182,35 @@ learning and pushing the boundaries of what's possible through code and innovati
   courses: [
     {
       id: 1,
-      name: "Windows Binary Exploitation Advanced",
-      institution: "AngelBoy Security Academy",
-      grade: "A+",
+      name: "TAIWAN HolyYoung Training - Crypto",
+      institution: "ISIP 資訊安全人才培育計畫",
+      grade: "Completed",
       status: "completed" as const,
+      certificates: ["/certificates/crypto-cert.png"],
     },
     {
       id: 2,
-      name: "Quantum Computing Fundamentals",
-      institution: "IBM Qiskit Learning",
-      grade: "Excellent",
+      name: "TAIWAN HolyYoung Training - 網站安全",
+      institution: "ISIP 資訊安全人才培育計畫",
+      grade: "Completed",
       status: "completed" as const,
+      certificates: ["/certificates/website-security-cert.png"],
     },
     {
       id: 3,
-      name: "Machine Learning Specialization",
-      institution: "Stanford Online / Coursera",
-      grade: "In Progress",
-      status: "in-progress" as const,
+      name: "高中職學生資安體驗營",
+      institution: "ISIP 資訊安全人才培育計畫",
+      grade: "Completed",
+      status: "completed" as const,
+      certificates: ["/certificates/camp-day1.pdf", "/certificates/camp-day2.pdf"],
     },
     {
       id: 4,
-      name: "Advanced Penetration Testing",
-      institution: "Offensive Security",
-      grade: "A",
+      name: "TAIWAN HolyYoung Training - 網頁安全",
+      institution: "ISIP 資訊安全人才培育計畫",
+      grade: "Completed",
       status: "completed" as const,
-    },
-    {
-      id: 5,
-      name: "Reverse Engineering Malware",
-      institution: "SANS Institute",
-      grade: "A-",
-      status: "completed" as const,
+      certificates: ["/certificates/web-security-cert.png"],
     },
   ] as Course[],
 };
