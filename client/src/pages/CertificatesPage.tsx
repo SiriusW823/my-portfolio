@@ -3,6 +3,38 @@ import { Link } from 'wouter';
 import { portfolioData } from '@/data/portfolioData';
 import { ArrowLeft, Award, ExternalLink } from 'lucide-react';
 
+// Credly Badge Component
+const CredlyBadge = ({ badgeId, title, imageUrl }: { badgeId: string; title: string; imageUrl: string }) => (
+  <a
+    href={`https://www.credly.com/badges/${badgeId}/public_url`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block group"
+  >
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className="p-6 rounded-xl bg-gray-900/50 border border-gray-800/50 hover:border-purple-500/50 transition-all"
+    >
+      <img src={imageUrl} alt={title} className="w-28 h-28 mx-auto mb-4 object-contain" />
+      <p className="text-center text-white font-medium text-sm">{title}</p>
+      <div className="flex items-center justify-center gap-2 mt-2 text-gray-500 text-xs">
+        <span>View on Credly</span>
+        <ExternalLink className="w-3 h-3" />
+      </div>
+    </motion.div>
+  </a>
+);
+
+// Credly badges data
+const credlyBadges = [
+  {
+    badgeId: "8e07ac98-950a-49ca-a746-4456545d1558",
+    title: "IT Specialist - Python",
+    imageUrl: "https://images.credly.com/size/340x340/images/3c4602d8-832e-4a24-b42d-00359ce746f7/ITS-Badges_Python_1200px.png",
+  },
+];
+
 export default function CertificatesPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
@@ -41,6 +73,23 @@ export default function CertificatesPage() {
               <p className="text-gray-500 font-mono text-sm mt-1">// {portfolioData.certificates.length} entries</p>
             </div>
           </motion.div>
+
+          {/* Verified Credly Badges */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="mb-12"
+          >
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <span className="text-purple-400">✓</span> Verified Badges
+            </h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {credlyBadges.map((badge) => (
+                <CredlyBadge key={badge.badgeId} badgeId={badge.badgeId} title={badge.title} imageUrl={badge.imageUrl} />
+              ))}
+            </div>
+          </motion.section>
 
           {/* Certificates List */}
           <div className="space-y-6">
