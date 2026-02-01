@@ -201,6 +201,13 @@ learning and pushing the boundaries of what's possible through code and innovati
       date: "2023-11",
       credentialId: "PYS-2023-556",
     },
+    {
+      id: 6,
+      name: "Arduino Certification",
+      issuer: "Arduino",
+      date: "2025-08",
+      link: "/certificates/arduino-certification.pdf",
+    },
   ] as Certificate[],
 
   courses: [
