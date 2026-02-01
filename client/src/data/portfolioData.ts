@@ -167,41 +167,6 @@ learning and pushing the boundaries of what's possible through code and innovati
 
   certificates: [
     {
-      id: 1,
-      name: "Windows Binary Exploitation",
-      issuer: "AngelBoy Security Training",
-      date: "2024-12",
-      credentialId: "WBE-2024-001",
-    },
-    {
-      id: 2,
-      name: "Active Directory Security",
-      issuer: "NCKUCTF Training Program",
-      date: "2024-08",
-      credentialId: "ADS-2024-042",
-    },
-    {
-      id: 3,
-      name: "Web Application Security",
-      issuer: "OWASP Foundation",
-      date: "2024-06",
-      credentialId: "OWASP-WAS-2024",
-    },
-    {
-      id: 4,
-      name: "Full Stack Development",
-      issuer: "Certification Program",
-      date: "2024-03",
-      credentialId: "FSD-2024-188",
-    },
-    {
-      id: 5,
-      name: "Python for Security",
-      issuer: "Cybrary",
-      date: "2023-11",
-      credentialId: "PYS-2023-556",
-    },
-    {
       id: 6,
       name: "Arduino Certification",
       issuer: "Arduino",
