@@ -9,9 +9,9 @@ export default function CompetitionsPage() {
   const { language, t } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#050505] text-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-sm border-b border-gray-800/50">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-sm border-b border-gray-800/50">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/">
             <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
