@@ -150,9 +150,14 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
-
 const isGitHubPages = process.env.GITHUB_PAGES === "true";
+
+const plugins = [react(), tailwindcss(), jsxLocPlugin()];
+
+// Only include Manus-specific plugins when NOT building for GitHub Pages
+if (!isGitHubPages) {
+  plugins.push(vitePluginManusRuntime(), vitePluginManusDebugCollector());
+}
 
 export default defineConfig({
   plugins,
