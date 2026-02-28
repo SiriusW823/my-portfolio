@@ -43,7 +43,7 @@ function TopNavBar() {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-[#0a0a0a]/95 backdrop-blur-md border-b border-gray-800/50' : 'bg-transparent'
+      isScrolled ? 'bg-[#050505]/95 backdrop-blur-md border-b border-gray-800/50' : 'bg-transparent'
     }`}>
       <div className="max-w-6xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
@@ -112,28 +112,32 @@ function TopNavBar() {
 function AnimatedBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Grid Pattern */}
+      {/* Grid Pattern - enhanced */}
       <div className="absolute inset-0" style={{
         backgroundImage: `
-          linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px)
+          linear-gradient(rgba(0, 240, 255, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 240, 255, 0.04) 1px, transparent 1px)
         `,
         backgroundSize: '60px 60px',
       }} />
 
-      {/* Floating Particles */}
+      {/* Floating Particles - enhanced glow */}
       <div className="absolute inset-0">
         {Array.from({ length: 50 }).map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 bg-cyan-400/30 rounded-full"
+            className="absolute w-1 h-1 rounded-full"
             style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
+              backgroundColor: i % 3 === 0 ? 'rgba(0, 240, 255, 0.4)' : 'rgba(139, 92, 246, 0.3)',
+              boxShadow: i % 3 === 0
+                ? '0 0 6px rgba(0, 240, 255, 0.3)'
+                : '0 0 6px rgba(139, 92, 246, 0.2)',
             }}
             animate={{
               y: [0, -30, 0],
-              opacity: [0.2, 0.6, 0.2],
+              opacity: [0.2, 0.7, 0.2],
               scale: [1, 1.5, 1],
             }}
             transition={{
@@ -146,8 +150,8 @@ function AnimatedBackground() {
         ))}
       </div>
 
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+      {/* Gradient Overlays - deeper */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/60" />
       <div className="absolute top-0 left-0 w-1/2 h-1/2 bg-gradient-radial from-cyan-500/5 to-transparent" />
       <div className="absolute bottom-0 right-0 w-1/2 h-1/2 bg-gradient-radial from-purple-500/5 to-transparent" />
     </div>
@@ -184,7 +188,7 @@ function ScrollIndicator({ onClick }: { onClick: () => void }) {
 function HeroSection({ onScrollClick }: { onScrollClick: () => void }) {
   const { t } = useLanguage();
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-[#0a0a0a]">
+    <section className="relative min-h-screen flex items-center justify-center bg-[#050505]">
       <AnimatedBackground />
 
       <div className="relative z-10 text-center px-6">
@@ -236,7 +240,7 @@ function AboutSection() {
   const { t } = useLanguage();
 
   return (
-    <section ref={ref} className="min-h-[80vh] py-24 px-6 bg-[#0a0a0a]">
+    <section ref={ref} className="min-h-[80vh] py-24 px-6 bg-[#050505]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -378,7 +382,7 @@ function NavigationHub() {
   ];
 
   return (
-    <section ref={ref} className="py-24 px-6 bg-[#0a0a0a]">
+    <section ref={ref} className="py-24 px-6 bg-[#050505]">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -464,7 +468,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#050505] text-white overflow-x-hidden">
       {/* Top Navigation Bar */}
       <TopNavBar />
 
