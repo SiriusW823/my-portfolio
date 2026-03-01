@@ -7,7 +7,7 @@ import { ArrowLeft, UserRound } from 'lucide-react';
 const sections = [
   {
     title: 'About',
-    items: ['學了一年資安還是很菜的的資安小白'],
+    items: ['學了一年資安還是很菜的資安小白'],
   },
   {
     title: '競賽',
