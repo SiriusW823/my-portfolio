@@ -20,7 +20,7 @@ export default function AboutPage() {
           </Link>
           <nav className="flex items-center gap-6">
             <Link href="/"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.home}</a></Link>
-            <Link href="/archives"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.archives}</a></Link>
+            <Link href="/archives"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">{t.nav.archives}</a></Link>
             <LanguageToggle />
           </nav>
         </div>
