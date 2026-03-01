@@ -171,7 +171,6 @@ learning and pushing the boundaries of what's possible through code and innovati
       name: "Arduino Certification",
       issuer: "Arduino",
       date: "2025-08",
-      link: "/certificates/arduino-certification.pdf",
     },
   ] as Certificate[],
 
@@ -182,7 +181,6 @@ learning and pushing the boundaries of what's possible through code and innovati
       institution: "ISIP 資訊安全人才培育計畫",
       grade: "Completed",
       status: "completed" as const,
-      certificates: ["/certificates/crypto-cert.png"],
     },
     {
       id: 2,
@@ -190,7 +188,6 @@ learning and pushing the boundaries of what's possible through code and innovati
       institution: "ISIP 資訊安全人才培育計畫",
       grade: "Completed",
       status: "completed" as const,
-      certificates: ["/certificates/website-security-cert.png"],
     },
     {
       id: 3,
@@ -198,7 +195,6 @@ learning and pushing the boundaries of what's possible through code and innovati
       institution: "ISIP 資訊安全人才培育計畫",
       grade: "Completed",
       status: "completed" as const,
-      certificates: ["/certificates/camp-day1.pdf", "/certificates/camp-day2.pdf"],
     },
     {
       id: 4,
@@ -206,7 +202,6 @@ learning and pushing the boundaries of what's possible through code and innovati
       institution: "ISIP 資訊安全人才培育計畫",
       grade: "Completed",
       status: "completed" as const,
-      certificates: ["/certificates/web-security-cert.png"],
     },
   ] as Course[],
 };
@@ -282,4 +277,3 @@ export const activities = [
   { id: 3, title: "Open Source Contributor", description: "Contributing to open-source projects.", icon: "Code" },
   { id: 4, title: "Tech Enthusiast", description: "Continuously learning new technologies.", icon: "Zap" },
 ];
-

@@ -6,6 +6,9 @@
 export const translations = {
   en: {
     nav: {
+      home: "HOME",
+      archives: "ARCHIVES",
+      about: "ABOUT",
       projects: "PROJECTS",
       competitions: "COMPETITIONS",
       certificates: "CERTIFICATES",
@@ -44,6 +47,9 @@ export const translations = {
   },
   zh: {
     nav: {
+      home: "首頁",
+      archives: "典藏",
+      about: "關於我",
       projects: "專案作品",
       competitions: "競賽經歷",
       certificates: "專業證照",
