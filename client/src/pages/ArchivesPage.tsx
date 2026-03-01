@@ -1,12 +1,42 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { portfolioData } from '@/data/portfolioData';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
-import { ArrowLeft, ExternalLink, Archive } from 'lucide-react';
+import { ArrowLeft, Archive } from 'lucide-react';
+
+const archiveByYear = [
+  {
+    year: '2025',
+    posts: [
+      { date: '12-28', title: 'AEGIS 神盾盃 2025 Qual/Final Write-up 與心得', tags: ['Write-up', 'Chinese'] },
+      { date: '12-27', title: 'HITCON CTF 2025 Qual/Final Write-up 與心得', tags: ['Write-up', 'Chinese'] },
+      { date: '04-26', title: 'Hacktheon Sejong 2025 Write-up 與心得', tags: ['Write-up', 'Chinese', 'Reverse', 'Forensics'] },
+      { date: '02-01', title: '台大資工大一上修膳心得', tags: ['Life', 'NTU', 'Chinese'] },
+    ],
+  },
+  {
+    year: '2024',
+    posts: [
+      { date: '08-12', title: 'Unity 逆向入門第三篇：UnityExplorer', tags: ['Unity', 'Chinese'] },
+      { date: '07-24', title: 'Unity 逆向入門第二篇：反編譯', tags: ['Unity', 'Chinese'] },
+      { date: '07-23', title: 'Unity 逆向入門第一篇：開發一個 Unity App', tags: ['Unity', 'Chinese'] },
+      { date: '05-14', title: '[HTB] Active Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '05-11', title: '[HTB] Buff Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '05-10', title: '[HTB] Bastion Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '05-06', title: 'THJCC CTF Write-ups', tags: ['Write-up', 'Chinese'] },
+      { date: '04-25', title: '[HTB] Secnotes Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-24', title: '[HTB] Forest Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-15', title: '[HTB] Jerry Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-15', title: '[HTB] Bounty Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-14', title: '[HTB] Silo Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-08', title: '[HTB] Granny Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
+      { date: '04-03', title: 'Hello World!', tags: ['Others'] },
+    ],
+  },
+];
 
 export default function ArchivesPage() {
-  const { language, t } = useLanguage();
+  const { t } = useLanguage();
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
@@ -32,69 +62,31 @@ export default function ArchivesPage() {
             <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
               <Archive className="w-8 h-8 text-cyan-400" />
             </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">{t.nav.archives}</h1>
-              <p className="text-gray-500 font-mono text-sm mt-1">// projects, competitions, certificates, courses</p>
-            </div>
-          </motion.div>
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-white">{t.nav.archives}</h1>
+                <p className="text-gray-500 font-mono text-sm mt-1">// posts timeline</p>
+              </div>
+            </motion.div>
 
-          <section>
-            <h2 className="text-xl font-semibold text-cyan-400 mb-4">Projects</h2>
-            <div className="space-y-3">
-              {portfolioData.projects.map((project) => (
-                <div key={project.id} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold">{project.title}</span>
-                    {project.link !== '#' && (
-                      <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-cyan-400 transition-colors">
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
-                    )}
+          {archiveByYear.map((yearBlock) => (
+            <section key={yearBlock.year}>
+              <div className="flex items-end gap-3 mb-4">
+                <h2 className="text-2xl font-semibold text-cyan-400">{yearBlock.year}</h2>
+                <p className="text-sm text-gray-500 font-mono">{yearBlock.posts.length} posts</p>
+              </div>
+              <div className="space-y-3">
+                {yearBlock.posts.map((post) => (
+                  <div key={`${yearBlock.year}-${post.date}-${post.title}`} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="text-sm text-gray-500 font-mono">{post.date}</span>
+                      <span className="font-semibold">{post.title}</span>
+                    </div>
+                    <p className="text-sm text-gray-400 mt-2">{post.tags.map((tag) => `#${tag}`).join(' ')}</p>
                   </div>
-                  <p className="text-sm text-gray-400 mt-1">{project.description[language || 'en']}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-yellow-400 mb-4">Competitions</h2>
-            <div className="space-y-3">
-              {portfolioData.competitions.map((comp) => (
-                <div key={comp.id} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="font-semibold">{comp.name}</span>
-                    <span className="text-sm text-gray-500 font-mono">{comp.year}</span>
-                  </div>
-                  <p className="text-sm text-gray-400 mt-1">{comp.award[language || 'en']}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-purple-400 mb-4">Certificates</h2>
-            <div className="space-y-3">
-              {portfolioData.certificates.map((cert) => (
-                <div key={cert.id} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-                  <p className="font-semibold">{cert.name}</p>
-                  <p className="text-sm text-gray-400">{cert.issuer} · {cert.date}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <section>
-            <h2 className="text-xl font-semibold text-green-400 mb-4">Courses</h2>
-            <div className="space-y-3">
-              {portfolioData.courses.map((course) => (
-                <div key={course.id} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-                  <p className="font-semibold">{course.name}</p>
-                  <p className="text-sm text-gray-400">{course.institution}</p>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          ))}
         </div>
       </main>
     </div>
