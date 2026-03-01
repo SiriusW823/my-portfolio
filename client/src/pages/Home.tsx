@@ -378,9 +378,14 @@ function NavigationHub() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const { t } = useLanguage();
+  const totalArchiveItems =
+    portfolioData.projects.length +
+    portfolioData.competitions.length +
+    portfolioData.certificates.length +
+    portfolioData.courses.length;
 
   const hubItems = [
-    { href: '/archives', title: t.nav.archives, icon: <Archive className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length + portfolioData.competitions.length + portfolioData.certificates.length + portfolioData.courses.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
+    { href: '/archives', title: t.nav.archives, icon: <Archive className="w-8 h-8 text-cyan-400" />, count: totalArchiveItems, color: 'border-cyan-500/30 hover:border-cyan-400' },
     { href: '/about', title: t.nav.about, icon: <UserRound className="w-8 h-8 text-purple-400" />, count: portfolioData.about.skills.length, color: 'border-purple-500/30 hover:border-purple-400' },
   ];
 
