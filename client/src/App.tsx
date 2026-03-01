@@ -7,10 +7,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import IntroLoader from "./components/IntroLoader";
 import Home from "./pages/Home";
-import ProjectsPage from "./pages/ProjectsPage";
-import CompetitionsPage from "./pages/CompetitionsPage";
-import CertificatesPage from "./pages/CertificatesPage";
-import CoursesPage from "./pages/CoursesPage";
+import ArchivesPage from "./pages/ArchivesPage";
+import AboutPage from "./pages/AboutPage";
 
 
 // Derive the base path from Vite's configured base URL for GitHub Pages support
@@ -21,10 +19,8 @@ function Router() {
     <WouterRouter base={basePath}>
       <Switch>
         <Route path={"/"} component={Home} />
-        <Route path={"/projects"} component={ProjectsPage} />
-        <Route path={"/competitions"} component={CompetitionsPage} />
-        <Route path={"/certificates"} component={CertificatesPage} />
-        <Route path={"/courses"} component={CoursesPage} />
+        <Route path={"/archives"} component={ArchivesPage} />
+        <Route path={"/about"} component={AboutPage} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
         <Route component={NotFound} />
