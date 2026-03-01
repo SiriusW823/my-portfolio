@@ -1,9 +1,56 @@
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { portfolioData } from '@/data/portfolioData';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import { ArrowLeft, UserRound } from 'lucide-react';
+
+const sections = [
+  {
+    title: 'About',
+    items: ['學了一年資安還是很菜的資安小白'],
+  },
+  {
+    title: '競賽',
+    items: [
+      '2024 No Hack No CTF Rank — 89/287 (Overall), 21/61 (Student)',
+      '2025 picoCTF — 226/10460',
+      '第 55 屆全國技能競賽中區分區賽網路安全 — 參賽者',
+      '2025 THJCC — Rank: 26/133 (Overall), 18/68 (Student)',
+      '2025 MyfirstCTF — Rank 7/83',
+      '2025 AIS3 pre-exam — Rank 73/344',
+      '2025 No Hack No CTF — Rank 16/???',
+      '2025 SCIST final — Rank 12/31',
+      '2025 Cyber Defense Exercise 初賽 — Rank 3',
+      '2025 Cyber Defense Exercise 決賽 — Rank 1',
+      '2026 AIS3 EOF QUAL — Rank 4',
+    ],
+  },
+  {
+    title: '社群經歷',
+    items: [
+      '2025 台中高工資訊科資安講師',
+      '2025 Hitcon cyber range 社群擺攤 ZeroCookie',
+      '2025 一日資訊體驗營 台中場助教',
+      '2026 ZeroCookie 課程組 成員',
+    ],
+  },
+  {
+    title: '戰隊',
+    items: ['ICEDTEA 成員'],
+  },
+  {
+    title: 'CTF 出題',
+    items: ['2025 CRHC CTF', '2025 TCIVS CTF', '2026 THJCC CTF'],
+  },
+  {
+    title: '證照',
+    items: ['iPAS 資訊安全工程師 初級', 'iPAS 資訊安全工程師 中級', 'Cisco CCST cybersecurity', '電腦硬體裝修 丙級'],
+  },
+  {
+    title: '課程參與',
+    items: ['SecurityFocusOnline', '2025 AIS3 第十屆AIS3好厲駭學員', 'AIOT永續產業鏈發展基地推動計畫 基礎課程'],
+  },
+];
 
 export default function AboutPage() {
   const { t } = useLanguage();
@@ -35,16 +82,20 @@ export default function AboutPage() {
             <h1 className="text-3xl md:text-4xl font-bold text-white">{t.nav.about}</h1>
           </motion.div>
 
-          <div className="p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50">
-            <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-line">{t.about.bio}</p>
-            <div className="flex flex-wrap gap-3 mt-8">
-              {portfolioData.about.skills.map((skill) => (
-                <span key={skill} className="px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700/50 text-gray-300 text-sm font-mono">
-                  {skill}
-                </span>
-              ))}
+          <div className="p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 space-y-8">
+            {sections.map((section) => (
+              <section key={section.title}>
+                <h2 className="text-xl font-semibold text-purple-300 mb-3"> {section.title}</h2>
+                <div className="space-y-2">
+                  {section.items.map((item) => (
+                    <p key={item} className="text-gray-300 leading-relaxed">
+                      {item}
+                    </p>
+                  ))}
+                </div>
+              </section>
+            ))}
             </div>
-          </div>
         </div>
       </main>
     </div>
