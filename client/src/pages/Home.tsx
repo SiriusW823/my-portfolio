@@ -6,10 +6,9 @@ import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 import {
   ChevronDown,
-  Award,
-  BookOpen,
-  Trophy,
-  FolderKanban,
+  Archive,
+  UserRound,
+  ExternalLink,
   Github,
   Instagram,
   Twitter,
@@ -35,10 +34,9 @@ function TopNavBar() {
   }, []);
 
   const navItems = [
-    { href: '/projects', label: t.nav.projects, color: 'hover:text-cyan-400' },
-    { href: '/competitions', label: t.nav.competitions, color: 'hover:text-yellow-400' },
-    { href: '/certificates', label: t.nav.certificates, color: 'hover:text-purple-400' },
-    { href: '/courses', label: t.nav.courses, color: 'hover:text-green-400' },
+    { href: '/', label: t.nav.home, color: 'hover:text-cyan-400' },
+    { href: '/archives', label: t.nav.archives, color: 'hover:text-yellow-400' },
+    { href: '/about', label: t.nav.about, color: 'hover:text-purple-400' },
   ];
 
   return (
@@ -262,7 +260,7 @@ function AboutSection() {
               animate={isInView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.6 }}
             >
-              <h3 className="text-lg font-semibold text-cyan-400 mb-4 font-mono">// Introduction</h3>
+              <h3 className="text-lg font-semibold text-cyan-400 mb-4 font-mono">$whoami</h3>
               <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-line">
                 {t.about.bio}
               </p>
@@ -285,13 +283,20 @@ function AboutSection() {
                   <span className="text-gray-400">Competitions</span>
                   <span className="text-2xl font-bold text-white">{portfolioData.competitions.length}</span>
                 </div>
-                <div className="flex justify-between items-center border-b border-gray-800 pb-3">
-                  <span className="text-gray-400">Certificates</span>
-                  <span className="text-2xl font-bold text-white">{portfolioData.certificates.length}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400">Courses</span>
-                  <span className="text-2xl font-bold text-white">{portfolioData.courses.length}</span>
+                <div className="pt-2">
+                  <div className="text-sm font-semibold text-white mb-1">
+                    <span className="text-purple-400">✓</span> Verified Badges
+                  </div>
+                  <p className="text-sm text-gray-300">IT Specialist - Python</p>
+                  <a
+                    href="https://www.credly.com/badges/8e07ac98-950a-49ca-a746-4456545d1558/public_url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-purple-300 transition-colors mt-1"
+                  >
+                    View on Credly
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
                 </div>
               </div>
             </motion.div>
@@ -375,10 +380,8 @@ function NavigationHub() {
   const { t } = useLanguage();
 
   const hubItems = [
-    { href: '/projects', title: t.nav.projects, icon: <FolderKanban className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
-    { href: '/competitions', title: t.nav.competitions, icon: <Trophy className="w-8 h-8 text-yellow-400" />, count: portfolioData.competitions.length, color: 'border-yellow-500/30 hover:border-yellow-400' },
-    { href: '/certificates', title: t.nav.certificates, icon: <Award className="w-8 h-8 text-purple-400" />, count: portfolioData.certificates.length, color: 'border-purple-500/30 hover:border-purple-400' },
-    { href: '/courses', title: t.nav.courses, icon: <BookOpen className="w-8 h-8 text-green-400" />, count: portfolioData.courses.length, color: 'border-green-500/30 hover:border-green-400' },
+    { href: '/archives', title: t.nav.archives, icon: <Archive className="w-8 h-8 text-cyan-400" />, count: portfolioData.projects.length + portfolioData.competitions.length + portfolioData.certificates.length + portfolioData.courses.length, color: 'border-cyan-500/30 hover:border-cyan-400' },
+    { href: '/about', title: t.nav.about, icon: <UserRound className="w-8 h-8 text-purple-400" />, count: portfolioData.about.skills.length, color: 'border-purple-500/30 hover:border-purple-400' },
   ];
 
   return (
@@ -390,11 +393,11 @@ function NavigationHub() {
           transition={{ duration: 0.8 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Explore My Work</h2>
-          <p className="text-gray-500 font-mono text-sm">Click to navigate to each section</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">Explore</h2>
+          <p className="text-gray-500 font-mono text-sm">Home / Archives / About</p>
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {hubItems.map((item, index) => (
             <HubCard
               key={item.href}
@@ -488,4 +491,3 @@ export default function Home() {
     </div>
   );
 }
-
