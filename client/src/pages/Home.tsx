@@ -8,7 +8,6 @@ import {
   ChevronDown,
   Archive,
   UserRound,
-  ExternalLink,
   Github,
   Instagram,
   Twitter,
@@ -283,44 +282,6 @@ function AboutSection() {
                   <span className="text-gray-400">Competitions</span>
                   <span className="text-2xl font-bold text-white">{portfolioData.competitions.length}</span>
                 </div>
-                <div className="pt-2">
-                  <div className="text-sm font-semibold text-white mb-1">
-                    <span className="text-purple-400">✓</span> Verified Badges
-                  </div>
-                  <p className="text-sm text-gray-300">IT Specialist - Python</p>
-                  <a
-                    href="https://www.credly.com/badges/8e07ac98-950a-49ca-a746-4456545d1558/public_url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-gray-400 hover:text-purple-300 transition-colors mt-1"
-                  >
-                    View on Credly
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Skills Block - Full Width */}
-            <motion.div
-              className="md:col-span-3 p-8 rounded-2xl bg-gradient-to-br from-gray-900/60 to-gray-900/30 border border-gray-800/50"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.6, duration: 0.6 }}
-            >
-              <h3 className="text-lg font-semibold text-cyan-400 mb-6 font-mono">// Technical Skills</h3>
-              <div className="flex flex-wrap gap-3">
-                {portfolioData.about.skills.map((skill, index) => (
-                  <motion.span
-                    key={skill}
-                    className="px-4 py-2 rounded-lg bg-gray-800/60 border border-gray-700/50 text-gray-300 text-sm font-mono hover:border-cyan-500/50 hover:text-cyan-300 transition-colors"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: 0.7 + index * 0.05, duration: 0.3 }}
-                  >
-                    {skill}
-                  </motion.span>
-                ))}
               </div>
             </motion.div>
           </div>

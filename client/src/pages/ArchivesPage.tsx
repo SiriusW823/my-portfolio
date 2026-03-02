@@ -6,31 +6,9 @@ import { ArrowLeft, Archive } from 'lucide-react';
 
 const archiveByYear = [
   {
-    year: '2025',
+    year: '2026',
     posts: [
-      { date: '12-28', title: 'AEGIS 神盾盃 2025 Qual/Final Write-up 與心得', tags: ['Write-up', 'Chinese'] },
-      { date: '12-27', title: 'HITCON CTF 2025 Qual/Final Write-up 與心得', tags: ['Write-up', 'Chinese'] },
-      { date: '04-26', title: 'Hacktheon Sejong 2025 Write-up 與心得', tags: ['Write-up', 'Chinese', 'Reverse', 'Forensics'] },
-      { date: '02-01', title: '台大資工大一上修膳心得', tags: ['Life', 'NTU', 'Chinese'] },
-    ],
-  },
-  {
-    year: '2024',
-    posts: [
-      { date: '08-12', title: 'Unity 逆向入門第三篇：UnityExplorer', tags: ['Unity', 'Chinese'] },
-      { date: '07-24', title: 'Unity 逆向入門第二篇：反編譯', tags: ['Unity', 'Chinese'] },
-      { date: '07-23', title: 'Unity 逆向入門第一篇：開發一個 Unity App', tags: ['Unity', 'Chinese'] },
-      { date: '05-14', title: '[HTB] Active Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '05-11', title: '[HTB] Buff Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '05-10', title: '[HTB] Bastion Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '05-06', title: 'THJCC CTF Write-ups', tags: ['Write-up', 'Chinese'] },
-      { date: '04-25', title: '[HTB] Secnotes Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-24', title: '[HTB] Forest Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-15', title: '[HTB] Jerry Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-15', title: '[HTB] Bounty Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-14', title: '[HTB] Silo Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-08', title: '[HTB] Granny Walkthrough', tags: ['HTB', 'Write-up', 'Chinese'] },
-      { date: '04-03', title: 'Hello World!', tags: ['Others'] },
+      { date: '01-18', title: 'HackMD', url: 'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q', tags: ['Link'] },
     ],
   },
 ];
@@ -79,7 +57,18 @@ export default function ArchivesPage() {
                   <div key={`${yearBlock.year}-${post.date}-${post.title}`} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="text-sm text-gray-500 font-mono">{post.date}</span>
-                      <span className="font-semibold">{post.title}</span>
+                      {post.url ? (
+                        <a
+                          href={post.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-semibold text-cyan-300 hover:text-cyan-200 transition-colors"
+                        >
+                          {post.title}
+                        </a>
+                      ) : (
+                        <span className="font-semibold">{post.title}</span>
+                      )}
                     </div>
                     <p className="text-sm text-gray-400 mt-2">{post.tags.map((tag) => `#${tag}`).join(' ')}</p>
                   </div>
