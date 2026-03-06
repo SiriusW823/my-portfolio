@@ -6,13 +6,18 @@ import { ArrowLeft, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
 
+const hackmdDownloadUrl = 'https://hackmd.io/@SIRIUSW/SyJAr3XS-e/download';
+
 const post = {
   title: 'FhCTF write up',
   date: '2026-01-18',
-  hackmdUrl: 'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q',
+  hackmdUrl: 'https://hackmd.io/@SIRIUSW/SyJAr3XS-e',
   markdownUrls: [
-    'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q/download',
-    'https://cors.isomorphic-git.org/https://hackmd.io/74os89FeTbyFh-bZsb0x0Q/download',
+    hackmdDownloadUrl,
+    `https://cors.isomorphic-git.org/${hackmdDownloadUrl}`,
+    `https://corsproxy.io/?${encodeURIComponent(hackmdDownloadUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(hackmdDownloadUrl)}`,
+    `https://r.jina.ai/http://${hackmdDownloadUrl.replace(/^https?:\/\//, '')}`,
   ],
 };
 
