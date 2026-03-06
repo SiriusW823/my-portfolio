@@ -8,7 +8,7 @@ const archiveByYear = [
   {
     year: '2026',
     posts: [
-      { date: '01-18', title: 'HackMD', url: 'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q', tags: ['Link'] },
+      { date: '01-18', title: 'FhCTF write up', path: '/archives/01-18', tags: ['Link'] },
     ],
   },
 ];
@@ -57,15 +57,12 @@ export default function ArchivesPage() {
                   <div key={`${yearBlock.year}-${post.date}-${post.title}`} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="text-sm text-gray-500 font-mono">{post.date}</span>
-                      {post.url ? (
-                        <a
-                          href={post.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-semibold text-cyan-300 hover:text-cyan-200 transition-colors"
-                        >
-                          {post.title}
-                        </a>
+                      {post.path ? (
+                        <Link href={post.path}>
+                          <a className="font-semibold text-cyan-300 hover:text-cyan-200 transition-colors">
+                            {post.title}
+                          </a>
+                        </Link>
                       ) : (
                         <span className="font-semibold">{post.title}</span>
                       )}
