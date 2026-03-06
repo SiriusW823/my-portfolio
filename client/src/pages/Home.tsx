@@ -235,6 +235,7 @@ function AboutSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
   const { t } = useLanguage();
+  const technicalSkills = ['python', 'machine learning', 'DevOps', 'web security', 'Discord Bot', 'quautum computing'];
 
   return (
     <section ref={ref} className="min-h-[80vh] py-24 px-6 bg-[#050505]">
@@ -263,6 +264,16 @@ function AboutSection() {
               <p className="text-gray-300 leading-relaxed text-lg whitespace-pre-line">
                 {t.about.bio}
               </p>
+              <div className="mt-6">
+                <h4 className="text-base font-semibold text-cyan-300 mb-3 font-mono">&lt;/&gt;Technical Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {technicalSkills.map((skill) => (
+                    <span key={skill} className="inline-flex px-3 py-1 rounded-md border border-cyan-500/40 bg-cyan-500/10 text-cyan-200 text-sm font-mono">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </motion.div>
 
             {/* Stats Block */}
