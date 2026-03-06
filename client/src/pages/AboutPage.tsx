@@ -20,7 +20,7 @@ const sections = [
     items: [
       'ITS Python',
       'Arduino Certification',
-      'APCS4/2',
+      'APCS 4/2',
       '初級火箭發射執照',
       'SEE THINK WONDER CERTIFICATE — Gold Level',
     ],
@@ -70,7 +70,7 @@ export default function AboutPage() {
           <div className="p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 space-y-8">
             {sections.map((section) => (
               <section key={section.title}>
-                <h2 className="text-xl font-semibold text-purple-300 mb-3"> {section.title}</h2>
+                <h2 className="text-xl font-semibold text-purple-300 mb-3">#{section.title}</h2>
                 <div className="space-y-2">
                   {section.items.map((item) => (
                     <p key={item} className="text-gray-300 leading-relaxed">

@@ -22,6 +22,8 @@ function Router() {
         <Route path={"/"} component={Home} />
         <Route path={"/archives"} component={ArchivesPage} />
         <Route path={"/archives/01-18"} component={ArchivePostPage} />
+        <Route path={"/archives/2025-eis"} component={ArchivePostPage} />
+        <Route path={"/archives/2025-quantum-terms"} component={ArchivePostPage} />
         <Route path={"/about"} component={AboutPage} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}

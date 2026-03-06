@@ -17,13 +17,13 @@ export const translations = {
     },
     hero: {
       title: "SIRIUS",
-      subtitle: "FULL STACK CREATOR / SECURITY ENTHUSIAST",
-      tagline: "EXPLORING THE DIGITAL FRONTIER.",
+      subtitle: "一位來自台灣的資訊愛好者",
+      tagline: "I DON'T BELIEVE IN TALENT, I'M HERE BECAUSE I WORK HARD FOR IT",
       cta: "SCROLL TO EXPLORE",
     },
     about: {
       title: "ABOUT ME",
-      bio: "Currently a Computer Science student passionate about Web Development and Cybersecurity. I specialize in turning creative ideas into code and honing my skills through CTFs and Hackathons. Seeking internship opportunities to apply my knowledge to real-world projects.",
+      bio: "Hi, I’m SIRIUS, a student passionate about technology and quantum computing.",
     },
     sections: {
       projects: "Projects",
@@ -58,13 +58,13 @@ export const translations = {
     },
     hero: {
       title: "SIRIUS",
-      subtitle: "全端開發者 / 資安愛好者",
-      tagline: "探索數位疆界的無限可能。",
+      subtitle: "一位來自台灣的資訊愛好者",
+      tagline: "I DON'T BELIEVE IN TALENT, I'M HERE BECAUSE I WORK HARD FOR IT",
       cta: "滾動查看更多",
     },
     about: {
       title: "關於我",
-      bio: "目前就讀於資訊工程學系，熱衷於網頁開發與資訊安全領域。擅長將創意轉化為程式碼，並在各類 CTF 競賽與黑客松中磨練技術。目前正在尋找實習機會，希望能將所學應用於真實專案。",
+      bio: "Hi, I’m SIRIUS, a student passionate about technology and quantum computing.",
     },
     sections: {
       projects: "專案作品",
