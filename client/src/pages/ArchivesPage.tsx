@@ -8,7 +8,14 @@ const archiveByYear = [
   {
     year: '2026',
     posts: [
-      { date: '01-18', title: 'FhCTF write up', path: '/archives/01-18', tags: ['Link'] },
+      { date: '01-18', title: 'FhCTF write up', path: '/archives/01-18', tags: ['HTML'] },
+    ],
+  },
+  {
+    year: '2025',
+    posts: [
+      { date: '01-01', title: 'EIS 所有量的求法', path: '/archives/2025-eis', tags: ['HTML'] },
+      { date: '01-01', title: '量子相關專有名詞說明', path: '/archives/2025-quantum-terms', tags: ['HTML'] },
     ],
   },
 ];
