@@ -17,7 +17,7 @@ export const translations = {
     },
     hero: {
       title: "SIRIUS",
-      subtitle: "一位來自台灣的資訊愛好者",
+      subtitle: "A technology enthusiast from Taiwan",
       tagline: "I DON'T BELIEVE IN TALENT, I'M HERE BECAUSE I WORK HARD FOR IT",
       cta: "SCROLL TO EXPLORE",
     },
