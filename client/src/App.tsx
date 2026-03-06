@@ -8,6 +8,7 @@ import { LanguageProvider } from "./context/LanguageContext";
 import IntroLoader from "./components/IntroLoader";
 import Home from "./pages/Home";
 import ArchivesPage from "./pages/ArchivesPage";
+import ArchivePostPage from "./pages/ArchivePostPage";
 import AboutPage from "./pages/AboutPage";
 
 
@@ -20,6 +21,7 @@ function Router() {
       <Switch>
         <Route path={"/"} component={Home} />
         <Route path={"/archives"} component={ArchivesPage} />
+        <Route path={"/archives/01-18"} component={ArchivePostPage} />
         <Route path={"/about"} component={AboutPage} />
         <Route path={"/404"} component={NotFound} />
         {/* Final fallback route */}
