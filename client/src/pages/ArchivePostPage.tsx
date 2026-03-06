@@ -1,88 +1,34 @@
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'wouter';
-import { Streamdown } from 'streamdown';
+import { Link, useLocation } from 'wouter';
 import { ArrowLeft, FileText } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import LanguageToggle from '@/components/LanguageToggle';
+import fhctfWriteupHtml from '../../../FhCTF Writeup.html?raw';
+import eisWriteupHtml from '../../../EIS 所有量的求法.html?raw';
+import quantumTermsHtml from '../../../量子相關專有名詞說明.html?raw';
 
-const hackmdDownloadUrl = 'https://hackmd.io/@SIRIUSW/SyJAr3XS-e/download';
-
-const post = {
-  title: 'FhCTF write up',
-  date: '2026-01-18',
-  hackmdUrl: 'https://hackmd.io/@SIRIUSW/SyJAr3XS-e',
-  markdownUrls: [
-    hackmdDownloadUrl,
-    `https://cors.isomorphic-git.org/${hackmdDownloadUrl}`,
-    `https://corsproxy.io/?${encodeURIComponent(hackmdDownloadUrl)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(hackmdDownloadUrl)}`,
-    `https://r.jina.ai/https://${hackmdDownloadUrl.replace(/^https?:\/\//, '')}`,
-  ],
+const posts = {
+  '/archives/01-18': {
+    title: 'FhCTF write up',
+    date: '2026-01-18',
+    html: fhctfWriteupHtml,
+  },
+  '/archives/2025-eis': {
+    title: 'EIS 所有量的求法',
+    date: '2025-01-01',
+    html: eisWriteupHtml,
+  },
+  '/archives/2025-quantum-terms': {
+    title: '量子相關專有名詞說明',
+    date: '2025-01-01',
+    html: quantumTermsHtml,
+  },
 };
 
 export default function ArchivePostPage() {
   const { t } = useLanguage();
-  const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    const fetchHackMdContent = async () => {
-      try {
-        let markdownText = '';
-        let lastError = 'No markdown sources available';
-        let hasMarkdownContent = false;
-
-        if (post.markdownUrls.length === 0) {
-          throw new Error(lastError);
-        }
-
-        for (const markdownUrl of post.markdownUrls) {
-          try {
-            const response = await fetch(markdownUrl, { signal: controller.signal });
-            if (!response.ok) {
-              lastError = `Request failed with status ${response.status}`;
-              continue;
-            }
-
-            markdownText = await response.text();
-            hasMarkdownContent = Boolean(markdownText.trim());
-            if (hasMarkdownContent) {
-              break;
-            }
-
-            lastError = 'Received empty markdown content';
-          } catch (err) {
-            if (controller.signal.aborted) {
-              throw err;
-            }
-            lastError = err instanceof Error ? err.message : 'Request failed';
-          }
-        }
-
-        if (!hasMarkdownContent) {
-          throw new Error(`Failed to fetch content from all available sources: ${lastError}`);
-        }
-
-        setContent(markdownText);
-      } catch (err) {
-        if (!controller.signal.aborted) {
-          setError(err instanceof Error ? err.message : 'Unable to load write up');
-        }
-      } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchHackMdContent();
-
-    return () => controller.abort();
-  }, []);
+  const [location] = useLocation();
+  const post = posts[location as keyof typeof posts] ?? posts['/archives/01-18'];
 
   return (
     <div className="min-h-screen bg-[#050505] text-white">
@@ -114,24 +60,13 @@ export default function ArchivePostPage() {
             </div>
           </motion.div>
 
-          <section className="p-6 md:p-8 rounded-xl bg-gray-900/50 border border-gray-800/50 overflow-x-auto">
-            {loading ? (
-              <p className="text-gray-400 font-mono text-sm">Loading HackMD content...</p>
-            ) : error ? (
-              <div className="space-y-3">
-                <p className="text-red-300 font-mono text-sm">Failed to load HackMD content: {error}</p>
-                <a
-                  href={post.hackmdUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-cyan-300 hover:text-cyan-200 underline decoration-cyan-500/50"
-                >
-                  Open this write-up on HackMD
-                </a>
-              </div>
-            ) : (
-              <Streamdown>{content}</Streamdown>
-            )}
+          <section className="p-2 md:p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
+            <iframe
+              title={post.title}
+              srcDoc={post.html}
+              className="w-full h-[80vh] rounded-lg bg-white"
+              sandbox="allow-same-origin allow-scripts"
+            />
           </section>
         </div>
       </main>
