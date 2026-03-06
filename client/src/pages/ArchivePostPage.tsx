@@ -9,7 +9,11 @@ import LanguageToggle from '@/components/LanguageToggle';
 const post = {
   title: 'FhCTF write up',
   date: '2026-01-18',
-  markdownUrl: 'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q/download',
+  hackmdUrl: 'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q',
+  markdownUrls: [
+    'https://hackmd.io/74os89FeTbyFh-bZsb0x0Q/download',
+    'https://cors.isomorphic-git.org/https://hackmd.io/74os89FeTbyFh-bZsb0x0Q/download',
+  ],
 };
 
 export default function ArchivePostPage() {
@@ -23,11 +27,24 @@ export default function ArchivePostPage() {
 
     const fetchHackMdContent = async () => {
       try {
-        const response = await fetch(post.markdownUrl, { signal: controller.signal });
-        if (!response.ok) {
-          throw new Error(`Request failed with status ${response.status}`);
+        let markdownText = '';
+
+        for (const markdownUrl of post.markdownUrls) {
+          const response = await fetch(markdownUrl, { signal: controller.signal });
+          if (!response.ok) {
+            continue;
+          }
+
+          markdownText = await response.text();
+          if (markdownText.trim()) {
+            break;
+          }
         }
-        const markdownText = await response.text();
+
+        if (!markdownText.trim()) {
+          throw new Error('Unable to fetch markdown content');
+        }
+
         setContent(markdownText);
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -79,7 +96,18 @@ export default function ArchivePostPage() {
             {loading ? (
               <p className="text-gray-400 font-mono text-sm">Loading HackMD content...</p>
             ) : error ? (
-              <p className="text-red-300 font-mono text-sm">Failed to load HackMD content: {error}</p>
+              <div className="space-y-3">
+                <p className="text-red-300 font-mono text-sm">Failed to load HackMD content.</p>
+                <a
+                  href={post.hackmdUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-cyan-300 hover:text-cyan-200 underline decoration-cyan-500/50"
+                >
+                  Open this write-up on HackMD
+                </a>
+                <p className="text-gray-500 font-mono text-xs">{error}</p>
+              </div>
             ) : (
               <Streamdown>{content}</Streamdown>
             )}
