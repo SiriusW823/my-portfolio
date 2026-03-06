@@ -17,7 +17,7 @@ const post = {
     `https://cors.isomorphic-git.org/${hackmdDownloadUrl}`,
     `https://corsproxy.io/?${encodeURIComponent(hackmdDownloadUrl)}`,
     `https://api.allorigins.win/raw?url=${encodeURIComponent(hackmdDownloadUrl)}`,
-    `https://r.jina.ai/http://${hackmdDownloadUrl.replace(/^https?:\/\//, '')}`,
+    `https://r.jina.ai/https://${hackmdDownloadUrl.replace(/^https?:\/\//, '')}`,
   ],
 };
 
