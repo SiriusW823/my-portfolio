@@ -28,21 +28,38 @@ export default function ArchivePostPage() {
     const fetchHackMdContent = async () => {
       try {
         let markdownText = '';
+        let lastError = 'No markdown sources available';
+        let hasMarkdownContent = false;
+
+        if (post.markdownUrls.length === 0) {
+          throw new Error(lastError);
+        }
 
         for (const markdownUrl of post.markdownUrls) {
-          const response = await fetch(markdownUrl, { signal: controller.signal });
-          if (!response.ok) {
-            continue;
-          }
+          try {
+            const response = await fetch(markdownUrl, { signal: controller.signal });
+            if (!response.ok) {
+              lastError = `Request failed with status ${response.status}`;
+              continue;
+            }
 
-          markdownText = await response.text();
-          if (markdownText.trim()) {
-            break;
+            markdownText = await response.text();
+            hasMarkdownContent = Boolean(markdownText.trim());
+            if (hasMarkdownContent) {
+              break;
+            }
+
+            lastError = 'Received empty markdown content';
+          } catch (err) {
+            if (controller.signal.aborted) {
+              throw err;
+            }
+            lastError = err instanceof Error ? err.message : 'Request failed';
           }
         }
 
-        if (!markdownText.trim()) {
-          throw new Error('Unable to fetch markdown content');
+        if (!hasMarkdownContent) {
+          throw new Error(`Failed to fetch content from all available sources: ${lastError}`);
         }
 
         setContent(markdownText);
@@ -97,7 +114,7 @@ export default function ArchivePostPage() {
               <p className="text-gray-400 font-mono text-sm">Loading HackMD content...</p>
             ) : error ? (
               <div className="space-y-3">
-                <p className="text-red-300 font-mono text-sm">Failed to load HackMD content.</p>
+                <p className="text-red-300 font-mono text-sm">Failed to load HackMD content: {error}</p>
                 <a
                   href={post.hackmdUrl}
                   target="_blank"
@@ -106,7 +123,6 @@ export default function ArchivePostPage() {
                 >
                   Open this write-up on HackMD
                 </a>
-                <p className="text-gray-500 font-mono text-xs">{error}</p>
               </div>
             ) : (
               <Streamdown>{content}</Streamdown>
