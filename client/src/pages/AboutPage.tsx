@@ -1,88 +1,74 @@
-import { motion } from 'framer-motion';
-import { Link } from 'wouter';
-import { useLanguage } from '@/context/LanguageContext';
-import LanguageToggle from '@/components/LanguageToggle';
-import { ArrowLeft, UserRound } from 'lucide-react';
-
-const sections = [
-  {
-    title: '競賽',
-    items: [
-      '2026 THJCC CTF Rank — 16/80(Student)',
-      '2026 11401FhCTF Rank — 19/54(Student)',
-      '2025 THJCC CTF Rank — 44/??(Student)',
-      '2025 台灣盃火箭競賽 — 堅定不移獎(中學組)',
-      '2025 全國高級中等學校校論文寫作比賽 Rank — 甲等(一年級)',
-    ],
-  },
-  {
-    title: '證照檢定',
-    items: [
-      'ITS Python',
-      'Arduino Certification',
-      'APCS 4/2',
-      '初級火箭發射執照',
-      'SEE THINK WONDER CERTIFICATE — Gold Level',
-    ],
-  },
-  {
-    title: '課程參與',
-    items: [
-      'SecurityFocus Online',
-      '2025 AIS3 Junior',
-      '火箭設計實作教學培訓課程',
-      '2024 AI姿態辨識實作4日營',
-      '2024高中海狸一日營',
-    ],
-  },
-];
+import { Github, MapPin } from "lucide-react";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { useLanguage } from "@/context/LanguageContext";
+import { evidence, localize, profile, skillGroups } from "@/data/siteContent";
 
 export default function AboutPage() {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const isZh = language === "zh";
+
+  const evidenceSections = [
+    { key: "competitions", title: isZh ? "競賽與成果" : "Competitions & results", items: evidence.competitions },
+    { key: "credentials", title: isZh ? "證照與檢定" : "Credentials", items: evidence.credentials },
+    { key: "learning", title: isZh ? "課程與培訓" : "Learning", items: evidence.learning },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-sm border-b border-gray-800/50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/">
-            <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">{t.nav.backToHome}</span>
-            </a>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.home}</a></Link>
-            <Link href="/archives"><a className="text-gray-500 hover:text-yellow-400 transition-colors text-sm font-mono">{t.nav.archives}</a></Link>
-            <LanguageToggle />
-          </nav>
-        </div>
-      </header>
+    <div className="site-page">
+      <SiteHeader active="about" />
+      <main id="main-content" className="section-shell page-main">
+        <header className="page-intro about-intro">
+          <div>
+            <p className="terminal-prompt"><span className="terminal-accent">$</span> cat about.md</p>
+            <h1>{isZh ? "關於 SIRIUS" : "About SIRIUS"}</h1>
+            <p>{localize(profile.shortBio, language)}</p>
+          </div>
+          <div className="about-meta">
+            <p><MapPin aria-hidden="true" />Taiwan</p>
+            <a href="https://github.com/SiriusW823" target="_blank" rel="noreferrer"><Github aria-hidden="true" />github.com/SiriusW823</a>
+          </div>
+        </header>
 
-      <main className="pt-24 pb-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-4 mb-10">
-            <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
-              <UserRound className="w-8 h-8 text-purple-400" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">{t.nav.about}</h1>
-          </motion.div>
+        <section className="about-statement content-section">
+          <p className="terminal-label">// how I work</p>
+          <div>
+            <h2>{isZh ? "我在意過程能不能被重現。" : "I care whether the process can be reproduced."}</h2>
+            <p>{isZh ? "不論是 CTF、量子模型、聲音分析或硬體電路，我都會留下假設、測試條件、失敗原因與下一步。這個網站不是獎項清單，而是一份持續修正的工作紀錄。" : "Whether the work is a CTF challenge, a quantum model, audio analysis, or a hardware circuit, I document assumptions, test conditions, failures, and next steps. This site is a working record rather than an award wall."}</p>
+          </div>
+        </section>
 
-          <div className="p-8 rounded-2xl bg-gray-900/50 border border-gray-800/50 space-y-8">
-            {sections.map((section) => (
-              <section key={section.title}>
-                <h2 className="text-xl font-semibold text-purple-300 mb-3">#{section.title}</h2>
-                <div className="space-y-2">
-                  {section.items.map((item) => (
-                    <p key={item} className="text-gray-300 leading-relaxed">
-                      {item}
-                    </p>
-                  ))}
-                </div>
+        <section className="content-section">
+          <div className="section-heading section-heading--stacked">
+            <p className="terminal-label">01 / toolkit</p>
+            <h2>{isZh ? "技能不是進度條" : "Skills without progress bars"}</h2>
+          </div>
+          <div className="skill-groups">
+            {skillGroups.map((group) => (
+              <div key={group.label}>
+                <h3>{group.label}/</h3>
+                <ul>{group.items.map((item) => <li key={item}>{item}</li>)}</ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="content-section">
+          <div className="section-heading section-heading--stacked">
+            <p className="terminal-label">02 / evidence</p>
+            <h2>{isZh ? "可核對的學習軌跡" : "A traceable learning record"}</h2>
+          </div>
+          <div className="evidence-grid">
+            {evidenceSections.map((section) => (
+              <section key={section.key}>
+                <h3>{section.title}</h3>
+                <ul>{section.items.map((item) => <li key={item}>{item}</li>)}</ul>
               </section>
             ))}
-            </div>
-        </div>
+          </div>
+        </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

@@ -1,87 +1,94 @@
-import { motion } from 'framer-motion';
-import { Link } from 'wouter';
-import { useLanguage } from '@/context/LanguageContext';
-import LanguageToggle from '@/components/LanguageToggle';
-import { ArrowLeft, Archive } from 'lucide-react';
+import { useState } from "react";
+import { ArrowRight, Search } from "lucide-react";
+import { Link } from "wouter";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { useLanguage } from "@/context/LanguageContext";
+import { articleIndex, type ArticleCategory } from "@/data/articleIndex.generated";
 
-const archiveByYear = [
-  {
-    year: '2026',
-    posts: [
-      { date: '01-18', title: 'FhCTF write up', path: '/archives/01-18', tags: ['HTML'] },
-    ],
-  },
-  {
-    year: '2025',
-    posts: [
-      { date: '01-01', title: 'EIS 所有量的求法', path: '/archives/2025-eis', tags: ['HTML'] },
-      { date: '01-01', title: '量子相關專有名詞說明', path: '/archives/2025-quantum-terms', tags: ['HTML'] },
-    ],
-  },
-];
+type CategoryFilter = "all" | ArticleCategory;
+
+const categoryLabels: Record<CategoryFilter, { zh: string; en: string }> = {
+  all: { zh: "全部", en: "All" },
+  security: { zh: "資安", en: "Security" },
+  quantum: { zh: "量子", en: "Quantum" },
+  "machine-learning": { zh: "機器學習", en: "Machine learning" },
+  engineering: { zh: "工程", en: "Engineering" },
+};
 
 export default function ArchivesPage() {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const isZh = language === "zh";
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<CategoryFilter>("all");
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredArticles = articleIndex.filter((article) => {
+    const matchesCategory = category === "all" || article.category === category;
+    const searchableText = `${article.title} ${article.summary} ${article.tags.join(" ")}`.toLowerCase();
+    return matchesCategory && (!normalizedQuery || searchableText.includes(normalizedQuery));
+  });
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-sm border-b border-gray-800/50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/">
-            <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">{t.nav.backToHome}</span>
-            </a>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.home}</a></Link>
-            <Link href="/about"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.about}</a></Link>
-            <LanguageToggle />
-          </nav>
-        </div>
-      </header>
+    <div className="site-page">
+      <SiteHeader active="writing" />
+      <main id="main-content" className="section-shell page-main">
+        <header className="page-intro page-intro--with-count">
+          <div>
+            <p className="terminal-prompt"><span className="terminal-accent">$</span> find ./notes -type f</p>
+            <h1>{isZh ? "文章與筆記" : "Writing & notes"}</h1>
+            <p>{isZh ? "CTF 解題、量子運算、機器學習與工程研究。文章已從 HackMD 整理為站內閱讀版本。" : "CTF writeups, quantum computing, machine learning, and engineering research, synced from HackMD for on-site reading."}</p>
+          </div>
+          <span className="large-count" aria-label={isZh ? `${articleIndex.length} 篇文章` : `${articleIndex.length} articles`}>{articleIndex.length}</span>
+        </header>
 
-      <main className="pt-24 pb-16 px-6">
-        <div className="max-w-5xl mx-auto space-y-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-4">
-            <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
-              <Archive className="w-8 h-8 text-cyan-400" />
-            </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white">{t.nav.archives}</h1>
-                <p className="text-gray-500 font-mono text-sm mt-1">// posts timeline</p>
-              </div>
-            </motion.div>
+        <section className="archive-tools" aria-label={isZh ? "文章篩選" : "Article filters"}>
+          <label className="search-field">
+            <Search aria-hidden="true" />
+            <span className="sr-only">{isZh ? "搜尋文章" : "Search articles"}</span>
+            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={isZh ? "搜尋標題、摘要或標籤" : "Search titles, summaries, or tags"} />
+          </label>
+          <div className="filter-tabs" role="group" aria-label={isZh ? "依分類篩選" : "Filter by category"}>
+            {(Object.keys(categoryLabels) as CategoryFilter[]).map((key) => (
+              <button type="button" key={key} className={category === key ? "is-active" : ""} aria-pressed={category === key} onClick={() => setCategory(key)}>
+                {categoryLabels[key][isZh ? "zh" : "en"]}
+              </button>
+            ))}
+          </div>
+        </section>
 
-          {archiveByYear.map((yearBlock) => (
-            <section key={yearBlock.year}>
-              <div className="flex items-end gap-3 mb-4">
-                <h2 className="text-2xl font-semibold text-cyan-400">{yearBlock.year}</h2>
-                <p className="text-sm text-gray-500 font-mono">{yearBlock.posts.length} posts</p>
+        <p className="result-count" aria-live="polite">
+          {isZh ? `顯示 ${filteredArticles.length} 篇` : `${filteredArticles.length} article${filteredArticles.length === 1 ? "" : "s"}`}
+        </p>
+
+        <div className="archive-list">
+          {filteredArticles.map((article) => (
+            <article key={article.slug} className="archive-row">
+              <div className="archive-row__meta">
+                <time dateTime={article.updatedAt}>{article.updatedAt}</time>
+                <span>{categoryLabels[article.category][isZh ? "zh" : "en"]}</span>
               </div>
-              <div className="space-y-3">
-                {yearBlock.posts.map((post) => (
-                  <div key={`${yearBlock.year}-${post.date}-${post.title}`} className="p-4 rounded-xl bg-gray-900/50 border border-gray-800/50">
-                    <div className="flex flex-wrap items-center gap-3">
-                      <span className="text-sm text-gray-500 font-mono">{post.date}</span>
-                      {post.path ? (
-                        <Link href={post.path}>
-                          <a className="font-semibold text-cyan-300 hover:text-cyan-200 transition-colors">
-                            {post.title}
-                          </a>
-                        </Link>
-                      ) : (
-                        <span className="font-semibold">{post.title}</span>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-400 mt-2">{post.tags.map((tag) => `#${tag}`).join(' ')}</p>
-                  </div>
-                ))}
+              <div className="archive-row__content">
+                <h2><Link href={`/archives/${article.slug}`}><a>{article.title}</a></Link></h2>
+                <p>{article.summary}</p>
+                <div className="archive-row__footer">
+                  <span>{article.readingMinutes} min read</span>
+                  <Link href={`/archives/${article.slug}`}><a className="text-link">{isZh ? "閱讀" : "Read"}<ArrowRight aria-hidden="true" /></a></Link>
+                </div>
               </div>
-            </section>
+            </article>
           ))}
+          {filteredArticles.length === 0 && (
+            <div className="empty-state">
+              <p className="terminal-label">0 results</p>
+              <h2>{isZh ? "沒有符合的文章" : "No matching notes"}</h2>
+              <button type="button" className="text-link" onClick={() => { setQuery(""); setCategory("all"); }}>
+                {isZh ? "清除篩選" : "Clear filters"}
+              </button>
+            </div>
+          )}
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }

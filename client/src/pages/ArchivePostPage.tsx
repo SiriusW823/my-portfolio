@@ -1,75 +1,76 @@
-import { motion } from 'framer-motion';
-import { Link, useLocation } from 'wouter';
-import { ArrowLeft, FileText } from 'lucide-react';
-import { useLanguage } from '@/context/LanguageContext';
-import LanguageToggle from '@/components/LanguageToggle';
-import fhctfWriteupHtml from '../../../FhCTF Writeup.html?raw';
-import eisWriteupHtml from '../../../EIS 所有量的求法.html?raw';
-import quantumTermsHtml from '../../../量子相關專有名詞說明.html?raw';
+import { useEffect } from "react";
+import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
+import { Streamdown } from "streamdown";
+import { Link, useLocation } from "wouter";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
+import { useLanguage } from "@/context/LanguageContext";
+import { articles } from "@/data/articles.generated";
 
-const posts = {
-  '/archives/01-18': {
-    title: 'FhCTF write up',
-    date: '2026-01-18',
-    html: fhctfWriteupHtml,
-  },
-  '/archives/2025-eis': {
-    title: 'EIS 所有量的求法',
-    date: '2025-01-01',
-    html: eisWriteupHtml,
-  },
-  '/archives/2025-quantum-terms': {
-    title: '量子相關專有名詞說明',
-    date: '2025-01-01',
-    html: quantumTermsHtml,
-  },
+const legacySlugs: Record<string, string> = {
+  "01-18": "fhctf-writeup",
+  "2025-eis": "eis-formulas",
+  "2025-quantum-terms": "quantum-glossary",
 };
 
 export default function ArchivePostPage() {
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const isZh = language === "zh";
   const [location] = useLocation();
-  const post = posts[location as keyof typeof posts] ?? posts['/archives/01-18'];
+  const requestedSlug = location.split("/").filter(Boolean).at(-1) ?? "";
+  const slug = legacySlugs[requestedSlug] ?? requestedSlug;
+  const article = articles.find((item) => item.slug === slug);
+
+  useEffect(() => {
+    if (!article) return;
+    const previousTitle = document.title;
+    document.title = `${article.title} — SIRIUS`;
+    return () => { document.title = previousTitle; };
+  }, [article]);
+
+  if (!article) {
+    return (
+      <div className="site-page">
+        <SiteHeader active="writing" />
+        <main id="main-content" className="section-shell page-main empty-state">
+          <p className="terminal-label">404 / note not found</p>
+          <h1>{isZh ? "找不到這篇文章" : "This note does not exist"}</h1>
+          <Link href="/archives"><a className="button-link">{isZh ? "返回文章列表" : "Back to writing"}</a></Link>
+        </main>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-[#050505]/90 backdrop-blur-sm border-b border-gray-800/50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/archives">
-            <a className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors">
-              <ArrowLeft className="w-5 h-5" />
-              <span className="font-mono text-sm">{t.nav.archives}</span>
+    <div className="site-page">
+      <SiteHeader active="writing" />
+      <main id="main-content" className="article-shell">
+        <Link href="/archives"><a className="article-back"><ArrowLeft aria-hidden="true" />{isZh ? "全部文章" : "All writing"}</a></Link>
+        <header className="article-header">
+          <div className="article-header__meta">
+            <span>{article.category.replace("-", " ")}</span>
+            <time dateTime={article.updatedAt}>{article.updatedAt}</time>
+            <span><Clock3 aria-hidden="true" />{article.readingMinutes} min</span>
+          </div>
+          <h1>{article.title}</h1>
+          <p>{article.summary}</p>
+          {article.sourceUrl && (
+            <a className="text-link" href={article.sourceUrl} target="_blank" rel="noreferrer">
+              {isZh ? "查看 HackMD 原文" : "View original on HackMD"}<ArrowUpRight aria-hidden="true" />
             </a>
-          </Link>
-          <nav className="flex items-center gap-6">
-            <Link href="/"><a className="text-gray-500 hover:text-cyan-400 transition-colors text-sm font-mono">{t.nav.home}</a></Link>
-            <Link href="/about"><a className="text-gray-500 hover:text-purple-400 transition-colors text-sm font-mono">{t.nav.about}</a></Link>
-            <LanguageToggle />
-          </nav>
-        </div>
-      </header>
+          )}
+        </header>
 
-      <main className="pt-24 pb-16 px-6">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="flex items-center gap-4">
-            <div className="p-4 rounded-xl bg-cyan-500/10 border border-cyan-500/30">
-              <FileText className="w-8 h-8 text-cyan-400" />
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-white">{post.title}</h1>
-              <p className="text-gray-500 font-mono text-sm mt-1">// {post.date}</p>
-            </div>
-          </motion.div>
+        <article className="article-body">
+          <Streamdown>{article.content}</Streamdown>
+        </article>
 
-          <section className="p-2 md:p-3 rounded-xl bg-gray-900/50 border border-gray-800/50">
-            <iframe
-              title={post.title}
-              srcDoc={post.html}
-              className="w-full h-[80vh] rounded-lg bg-white"
-              sandbox="allow-same-origin allow-scripts"
-            />
-          </section>
-        </div>
+        <nav className="article-end" aria-label={isZh ? "文章結尾導覽" : "End of article navigation"}>
+          <span className="terminal-label">// eof</span>
+          <Link href="/archives"><a className="button-link">{isZh ? "回到文章列表" : "Back to writing"}<ArrowLeft aria-hidden="true" /></a></Link>
+        </nav>
       </main>
+      <SiteFooter />
     </div>
   );
 }
