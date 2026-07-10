@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -6,10 +7,13 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import IntroLoader from "./components/IntroLoader";
+import { RouteFallback } from "./components/RouteFallback";
 import Home from "./pages/Home";
-import ArchivesPage from "./pages/ArchivesPage";
-import ArchivePostPage from "./pages/ArchivePostPage";
-import AboutPage from "./pages/AboutPage";
+
+const WorkPage = lazy(() => import("./pages/WorkPage"));
+const ArchivesPage = lazy(() => import("./pages/ArchivesPage"));
+const ArchivePostPage = lazy(() => import("./pages/ArchivePostPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 
 
 // Derive the base path from Vite's configured base URL for GitHub Pages support
@@ -18,17 +22,18 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, "") || "";
 function Router() {
   return (
     <WouterRouter base={basePath}>
-      <Switch>
-        <Route path={"/"} component={Home} />
-        <Route path={"/archives"} component={ArchivesPage} />
-        <Route path={"/archives/01-18"} component={ArchivePostPage} />
-        <Route path={"/archives/2025-eis"} component={ArchivePostPage} />
-        <Route path={"/archives/2025-quantum-terms"} component={ArchivePostPage} />
-        <Route path={"/about"} component={AboutPage} />
-        <Route path={"/404"} component={NotFound} />
-        {/* Final fallback route */}
-        <Route component={NotFound} />
-      </Switch>
+      <Suspense fallback={<RouteFallback />}>
+        <Switch>
+          <Route path={"/"} component={Home} />
+          <Route path={"/work"} component={WorkPage} />
+          <Route path={"/archives"} component={ArchivesPage} />
+          <Route path={"/archives/:slug"} component={ArchivePostPage} />
+          <Route path={"/about"} component={AboutPage} />
+          <Route path={"/404"} component={NotFound} />
+          {/* Final fallback route */}
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
     </WouterRouter>
   );
 }
