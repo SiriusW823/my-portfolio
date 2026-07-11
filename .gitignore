@@ -108,3 +108,9 @@ temp/
 # Manus debug logs
 .manus-logs/
 deploy-log.txt
+
+# Non-website files (CTF/solver scripts, local notes)
+__pycache__/
+/*.py
+/*.sage
+/*.html
