@@ -1,111 +1,131 @@
-import { ArrowRight, BookOpen, CircleDot, Github } from "lucide-react";
+import { ArrowRight, CircleDot, FolderOpen, Github, Instagram, MapPin } from "lucide-react";
 import { Link } from "wouter";
+import IntroExperience from "@/components/IntroExperience";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLanguage } from "@/context/LanguageContext";
-import { articleIndex } from "@/data/articleIndex.generated";
-import { localize, profile, projects } from "@/data/siteContent";
+import { articleIndex, type ArticleCategory } from "@/data/articleIndex.generated";
+import { localize, profile, skillGroups } from "@/data/siteContent";
+
+const categoryLabels: Record<ArticleCategory, { zh: string; en: string }> = {
+  security: { zh: "資安", en: "Security" },
+  quantum: { zh: "量子", en: "Quantum" },
+  "machine-learning": { zh: "機器學習", en: "Machine learning" },
+  engineering: { zh: "工程", en: "Engineering" },
+};
+
+const POSTS_PER_HOME = 8;
 
 export default function Home() {
   const { language } = useLanguage();
   const isZh = language === "zh";
-  const featuredProjects = projects.slice(0, 3);
-  const latestArticles = articleIndex.slice(0, 4);
+
+  const sortedArticles = [...articleIndex].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+  const latestArticles = sortedArticles.slice(0, POSTS_PER_HOME);
+
+  const categoryCounts = new Map<ArticleCategory, number>();
+  for (const article of articleIndex) {
+    categoryCounts.set(article.category, (categoryCounts.get(article.category) ?? 0) + 1);
+  }
+  const categories = Array.from(categoryCounts.entries()).sort((a, b) => b[1] - a[1]);
 
   return (
     <div className="site-page">
       <SiteHeader active="home" />
-      <main id="main-content">
-        <section className="hero-shell section-shell">
-          <div className="hero-copy">
-            <p className="terminal-prompt"><span className="terminal-accent">$</span> whoami</p>
-            <h1>{isZh ? "把好奇心做成能被驗證的系統。" : "Turning curiosity into systems that can be tested."}</h1>
-            <p className="hero-intro">{localize(profile.shortBio, language)}</p>
-            <div className="hero-actions">
-              <Link href="/work">
-                <a className="button-link button-link--primary">
-                  {isZh ? "看作品" : "View work"}<ArrowRight aria-hidden="true" />
-                </a>
-              </Link>
+      <IntroExperience />
+      <main id="main-content" className="section-shell home-layout">
+        <div className="home-feed">
+          <header className="home-intro">
+            <h1 className="home-intro__whoami">
+              <span className="terminal-accent">$</span> whoami<span className="home-intro__cursor" aria-hidden="true">_</span>
+            </h1>
+            <ul className="skill-tiles" aria-label={isZh ? "技能" : "Skills"}>
+              {skillGroups.flatMap((group) => group.items).map((skill) => (
+                <li className="skill-tile" key={skill}>{skill}</li>
+              ))}
+            </ul>
+            <p className="home-intro__note">
+              {isZh
+                ? "來自台灣的高中生，研究資安、量子運算與工程實作。"
+                : "A high school student in Taiwan exploring cybersecurity, quantum computing, and hands-on engineering."}
+            </p>
+          </header>
+
+          <section aria-label={isZh ? "最新文章" : "Latest posts"}>
+            <div className="section-heading home-feed__heading">
+              <p className="terminal-label">01 / latest posts</p>
               <Link href="/archives">
-                <a className="button-link">
-                  {isZh ? "讀研究與解題筆記" : "Read notes"}<BookOpen aria-hidden="true" />
-                </a>
+                <a className="text-link">{isZh ? `全部 ${articleIndex.length} 篇` : `All ${articleIndex.length} posts`}<ArrowRight aria-hidden="true" /></a>
               </Link>
             </div>
-          </div>
 
-          <aside className="now-panel" aria-label={isZh ? "目前狀態" : "Current status"}>
-            <div className="window-bar"><span /><span /><span /><code>now.txt</code></div>
-            <div className="now-panel__body">
-              <p className="terminal-label">{isZh ? "目前進行" : "CURRENTLY"}</p>
-              <p>{localize(profile.current, language)}</p>
-              <dl>
-                <div><dt>notes</dt><dd>{articleIndex.length}</dd></div>
-                <div><dt>builds</dt><dd>{projects.length}</dd></div>
-                <div><dt>ctf</dt><dd>16 / 80</dd></div>
+            <div className="post-card-list">
+              {latestArticles.map((article) => (
+                <article className="post-card" key={article.slug}>
+                  <div className="post-card__meta">
+                    <time dateTime={article.publishedAt}>{article.publishedAt}</time>
+                    <Link href={`/archives?category=${article.category}`}>
+                      <a className="post-card__category">{categoryLabels[article.category][isZh ? "zh" : "en"]}</a>
+                    </Link>
+                  </div>
+                  <h2>
+                    <Link href={`/archives/${article.slug}`}><a>{article.title}</a></Link>
+                  </h2>
+                  <p className="post-card__summary">{article.summary}</p>
+                  <div className="post-card__footer post-card__footer--right">
+                    <span className="post-card__reading">{article.readingMinutes} min</span>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <Link href="/archives">
+              <a className="button-link home-feed__more">{isZh ? "瀏覽所有文章" : "Browse all posts"}<ArrowRight aria-hidden="true" /></a>
+            </Link>
+          </section>
+        </div>
+
+        <aside className="home-sidebar">
+          <section className="side-card profile-card" aria-label={isZh ? "作者資訊" : "Author profile"}>
+            <div className="window-bar"><span /><span /><span /><code>profile.txt</code></div>
+            <div className="profile-card__body">
+              <div className="profile-card__avatar" aria-hidden="true">S<span className="terminal-accent">_</span></div>
+              <h2>{profile.name}</h2>
+              <p className="profile-card__tagline">{localize(profile.shortBio, language)}</p>
+              <dl className="profile-card__stats profile-card__stats--two">
+                <div><dt>{isZh ? "文章" : "posts"}</dt><dd>{articleIndex.length}</dd></div>
+                <div><dt>{isZh ? "分類" : "categories"}</dt><dd>{categories.length}</dd></div>
               </dl>
-              <p className="status-line"><CircleDot aria-hidden="true" /> {isZh ? "持續更新實驗與失敗紀錄" : "Logging experiments and failures as they happen"}</p>
+              <p className="profile-card__location"><MapPin aria-hidden="true" />Taiwan</p>
+              <div className="profile-card__links">
+                <a href="https://github.com/SiriusW823" target="_blank" rel="noreferrer" aria-label="GitHub"><Github aria-hidden="true" /></a>
+                <a href="https://www.instagram.com/s1rius_w" target="_blank" rel="noreferrer" aria-label="Instagram"><Instagram aria-hidden="true" /></a>
+              </div>
             </div>
-          </aside>
-        </section>
+          </section>
 
-        <section className="section-shell content-section">
-          <div className="section-heading">
-            <div>
-              <p className="terminal-label">01 / selected work</p>
-              <h2>{isZh ? "不是概念圖，是做過的東西" : "Built work, not concept pieces"}</h2>
-            </div>
-            <Link href="/work"><a className="text-link">{isZh ? "全部作品" : "All work"}<ArrowRight aria-hidden="true" /></a></Link>
-          </div>
+          <section className="side-card" aria-label={isZh ? "分類" : "Categories"}>
+            <h3 className="side-card__title"><FolderOpen aria-hidden="true" />{isZh ? "分類" : "Categories"}</h3>
+            <ul className="side-cat-list">
+              {categories.map(([category, count]) => (
+                <li key={category}>
+                  <Link href={`/archives?category=${category}`}>
+                    <a>
+                      <span>{categoryLabels[category][isZh ? "zh" : "en"]}</span>
+                      <span className="side-count">{count}</span>
+                    </a>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-          <div className="project-list project-list--home">
-            {featuredProjects.map((project, index) => (
-              <article className="project-row" key={project.id}>
-                <div className="project-row__index">0{index + 1}</div>
-                <div className="project-row__content">
-                  <div className="project-row__meta"><span>{project.year}</span><span>{localize(project.status, language)}</span></div>
-                  <h3>{localize(project.title, language)}</h3>
-                  <p>{localize(project.description, language)}</p>
-                  <ul className="tag-list" aria-label={isZh ? "使用工具" : "Tools used"}>
-                    {project.tools.slice(0, 5).map((tool) => <li key={tool}>{tool}</li>)}
-                  </ul>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="section-shell content-section two-column-section">
-          <div className="section-heading section-heading--stacked">
-            <p className="terminal-label">02 / latest writing</p>
-            <h2>{isZh ? "研究、實驗與解題紀錄" : "Research, experiments, and writeups"}</h2>
-            <p>{isZh ? "文章從 HackMD 整理為站內閱讀版本，可搜尋、分類，也保留原始來源。" : "Notes are synced from HackMD into searchable, readable on-site articles with links back to the originals."}</p>
-          </div>
-          <div className="article-index">
-            {latestArticles.map((article) => (
-              <Link key={article.slug} href={`/archives/${article.slug}`}>
-                <a className="article-index__item">
-                  <span className="article-index__date">{article.updatedAt}</span>
-                  <span className="article-index__title">{article.title}</span>
-                  <span className="article-index__time">{article.readingMinutes} min</span>
-                  <ArrowRight aria-hidden="true" />
-                </a>
-              </Link>
-            ))}
-            <Link href="/archives"><a className="text-link article-index__all">{isZh ? `瀏覽全部 ${articleIndex.length} 篇` : `Browse all ${articleIndex.length} notes`}<ArrowRight aria-hidden="true" /></a></Link>
-          </div>
-        </section>
-
-        <section className="section-shell contact-strip">
-          <div>
-            <p className="terminal-label">03 / source</p>
-            <h2>{isZh ? "程式、研究與持續更新" : "Code, research, and ongoing work"}</h2>
-          </div>
-          <a className="button-link" href="https://github.com/SiriusW823" target="_blank" rel="noreferrer">
-            <Github aria-hidden="true" />GitHub
-          </a>
-        </section>
+          <section className="side-card" aria-label={isZh ? "目前狀態" : "Current status"}>
+            <h3 className="side-card__title"><CircleDot aria-hidden="true" />{isZh ? "目前進行" : "Now"}</h3>
+            <p className="side-card__text">{localize(profile.current, language)}</p>
+            <p className="status-line"><CircleDot aria-hidden="true" /> {isZh ? "持續更新實驗與失敗紀錄" : "Logging experiments and failures as they happen"}</p>
+          </section>
+        </aside>
       </main>
       <SiteFooter />
     </div>

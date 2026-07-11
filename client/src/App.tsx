@@ -10,7 +10,6 @@ import IntroLoader from "./components/IntroLoader";
 import { RouteFallback } from "./components/RouteFallback";
 import Home from "./pages/Home";
 
-const WorkPage = lazy(() => import("./pages/WorkPage"));
 const ArchivesPage = lazy(() => import("./pages/ArchivesPage"));
 const ArchivePostPage = lazy(() => import("./pages/ArchivePostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
@@ -25,7 +24,6 @@ function Router() {
       <Suspense fallback={<RouteFallback />}>
         <Switch>
           <Route path={"/"} component={Home} />
-          <Route path={"/work"} component={WorkPage} />
           <Route path={"/archives"} component={ArchivesPage} />
           <Route path={"/archives/:slug"} component={ArchivePostPage} />
           <Route path={"/about"} component={AboutPage} />

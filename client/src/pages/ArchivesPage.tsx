@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLanguage } from "@/context/LanguageContext";
-import { articleIndex, type ArticleCategory } from "@/data/articleIndex.generated";
+import { articleIndex, type ArticleCategory, type ArticleSummary } from "@/data/articleIndex.generated";
 
 type CategoryFilter = "all" | ArticleCategory;
 
@@ -16,17 +16,44 @@ const categoryLabels: Record<CategoryFilter, { zh: string; en: string }> = {
   engineering: { zh: "工程", en: "Engineering" },
 };
 
+function readInitialFilters(): { category: CategoryFilter; query: string } {
+  if (typeof window === "undefined") return { category: "all", query: "" };
+  const params = new URLSearchParams(window.location.search);
+  const categoryParam = params.get("category");
+  const category =
+    categoryParam && categoryParam in categoryLabels ? (categoryParam as CategoryFilter) : "all";
+  return { category, query: params.get("q") ?? "" };
+}
+
+function groupByYear(articles: ArticleSummary[]): Array<[string, ArticleSummary[]]> {
+  const groups = new Map<string, ArticleSummary[]>();
+  for (const article of articles) {
+    const year = article.publishedAt.slice(0, 4);
+    const list = groups.get(year) ?? [];
+    list.push(article);
+    groups.set(year, list);
+  }
+  return Array.from(groups.entries())
+    .sort((a, b) => b[0].localeCompare(a[0]))
+    .map(([year, list]) => [
+      year,
+      list.sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)),
+    ]);
+}
+
 export default function ArchivesPage() {
   const { language } = useLanguage();
   const isZh = language === "zh";
-  const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<CategoryFilter>("all");
+  const initialFilters = readInitialFilters();
+  const [query, setQuery] = useState(initialFilters.query);
+  const [category, setCategory] = useState<CategoryFilter>(initialFilters.category);
   const normalizedQuery = query.trim().toLowerCase();
   const filteredArticles = articleIndex.filter((article) => {
     const matchesCategory = category === "all" || article.category === category;
     const searchableText = `${article.title} ${article.summary} ${article.tags.join(" ")}`.toLowerCase();
     return matchesCategory && (!normalizedQuery || searchableText.includes(normalizedQuery));
   });
+  const yearGroups = groupByYear(filteredArticles);
 
   return (
     <div className="site-page">
@@ -60,22 +87,35 @@ export default function ArchivesPage() {
           {isZh ? `顯示 ${filteredArticles.length} 篇` : `${filteredArticles.length} article${filteredArticles.length === 1 ? "" : "s"}`}
         </p>
 
-        <div className="archive-list">
-          {filteredArticles.map((article) => (
-            <article key={article.slug} className="archive-row">
-              <div className="archive-row__meta">
-                <time dateTime={article.updatedAt}>{article.updatedAt}</time>
-                <span>{categoryLabels[article.category][isZh ? "zh" : "en"]}</span>
+        <div className="archive-timeline">
+          {yearGroups.map(([year, articles]) => (
+            <section key={year} className="year-group" aria-label={isZh ? `${year} 年文章` : `Posts from ${year}`}>
+              <h2 className="year-group__label">
+                {year}<span className="year-group__count">({articles.length})</span>
+              </h2>
+              <div className="year-group__list">
+                {articles.map((article) => (
+                  <article key={article.slug} className="timeline-row">
+                    <time className="timeline-row__date" dateTime={article.publishedAt}>
+                      {article.publishedAt.slice(5)}
+                    </time>
+                    <div className="timeline-row__content">
+                      <h3>
+                        <Link href={`/archives/${article.slug}`}><a>{article.title}</a></Link>
+                      </h3>
+                      <p className="timeline-row__summary">{article.summary}</p>
+                      <div className="timeline-row__footer">
+                        <span className="timeline-row__category">{categoryLabels[article.category][isZh ? "zh" : "en"]}</span>
+                        <span>{article.readingMinutes} min read</span>
+                        <Link href={`/archives/${article.slug}`}>
+                          <a className="text-link">{isZh ? "閱讀" : "Read"}<ArrowRight aria-hidden="true" /></a>
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                ))}
               </div>
-              <div className="archive-row__content">
-                <h2><Link href={`/archives/${article.slug}`}><a>{article.title}</a></Link></h2>
-                <p>{article.summary}</p>
-                <div className="archive-row__footer">
-                  <span>{article.readingMinutes} min read</span>
-                  <Link href={`/archives/${article.slug}`}><a className="text-link">{isZh ? "閱讀" : "Read"}<ArrowRight aria-hidden="true" /></a></Link>
-                </div>
-              </div>
-            </article>
+            </section>
           ))}
           {filteredArticles.length === 0 && (
             <div className="empty-state">

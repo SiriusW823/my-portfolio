@@ -30,18 +30,9 @@ export default function AboutPage() {
           </div>
         </header>
 
-        <section className="about-statement content-section">
-          <p className="terminal-label">// how I work</p>
-          <div>
-            <h2>{isZh ? "我在意過程能不能被重現。" : "I care whether the process can be reproduced."}</h2>
-            <p>{isZh ? "不論是 CTF、量子模型、聲音分析或硬體電路，我都會留下假設、測試條件、失敗原因與下一步。這個網站不是獎項清單，而是一份持續修正的工作紀錄。" : "Whether the work is a CTF challenge, a quantum model, audio analysis, or a hardware circuit, I document assumptions, test conditions, failures, and next steps. This site is a working record rather than an award wall."}</p>
-          </div>
-        </section>
-
         <section className="content-section">
           <div className="section-heading section-heading--stacked">
-            <p className="terminal-label">01 / toolkit</p>
-            <h2>{isZh ? "技能不是進度條" : "Skills without progress bars"}</h2>
+            <h2 className="terminal-heading">01 / toolkit</h2>
           </div>
           <div className="skill-groups">
             {skillGroups.map((group) => (
@@ -55,8 +46,7 @@ export default function AboutPage() {
 
         <section className="content-section">
           <div className="section-heading section-heading--stacked">
-            <p className="terminal-label">02 / evidence</p>
-            <h2>{isZh ? "可核對的學習軌跡" : "A traceable learning record"}</h2>
+            <h2 className="terminal-heading">02 / evidence</h2>
           </div>
           <div className="evidence-grid">
             {evidenceSections.map((section) => (

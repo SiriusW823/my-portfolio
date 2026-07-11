@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import LanguageToggle from "./LanguageToggle";
 import { useLanguage } from "@/context/LanguageContext";
 
-type ActivePage = "home" | "work" | "writing" | "about";
+type ActivePage = "home" | "writing" | "about";
 
 interface SiteHeaderProps {
   active: ActivePage;
@@ -15,7 +15,6 @@ export function SiteHeader({ active }: SiteHeaderProps) {
   const { language } = useLanguage();
   const isZh = language === "zh";
   const navItems: Array<{ key: ActivePage; href: string; label: string }> = [
-    { key: "work", href: "/work", label: isZh ? "作品" : "Work" },
     { key: "writing", href: "/archives", label: isZh ? "文章" : "Writing" },
     { key: "about", href: "/about", label: isZh ? "關於" : "About" },
   ];

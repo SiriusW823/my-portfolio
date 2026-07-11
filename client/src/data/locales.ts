@@ -9,10 +9,6 @@ export const translations = {
       home: "HOME",
       archives: "ARCHIVES",
       about: "ABOUT",
-      projects: "PROJECTS",
-      competitions: "COMPETITIONS",
-      certificates: "CERTIFICATES",
-      courses: "COURSES",
       backToHome: "Back to Home",
     },
     hero: {
@@ -26,10 +22,6 @@ export const translations = {
       bio: "Hi, I’m SIRIUS, a student passionate about technology and quantum computing.",
     },
     sections: {
-      projects: "Projects",
-      competitions: "Competitions",
-      certificates: "Certificates",
-      courses: "Courses",
       verifiedBadges: "Verified Badges",
       viewOnCredly: "View on Credly",
       openPdf: "Open PDF",
@@ -50,10 +42,6 @@ export const translations = {
       home: "HOME",
       archives: "ARCHIVES",
       about: "ABOUT",
-      projects: "專案作品",
-      competitions: "競賽經歷",
-      certificates: "專業證照",
-      courses: "修課紀錄",
       backToHome: "返回首頁",
     },
     hero: {
@@ -67,10 +55,6 @@ export const translations = {
       bio: "Hi, I’m SIRIUS, a student passionate about technology and quantum computing.",
     },
     sections: {
-      projects: "專案作品",
-      competitions: "競賽經歷",
-      certificates: "專業證照",
-      courses: "修課紀錄",
       verifiedBadges: "認證徽章",
       viewOnCredly: "在 Credly 查看",
       openPdf: "開啟 PDF",

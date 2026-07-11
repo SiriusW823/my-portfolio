@@ -107,3 +107,4 @@ temp/
 
 # Manus debug logs
 .manus-logs/
+deploy-log.txt
