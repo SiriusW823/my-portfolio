@@ -4001,3 +4001,330 @@ pre {
     height: 360svh;
   }
 }
+
+/* ===== Immersive quantum introduction ===== */
+.scroll-intro {
+  --moment-0-opacity: 1;
+  --moment-1-opacity: 0;
+  --moment-2-opacity: 0;
+  --moment-0-y: 0vh;
+  --moment-1-y: 20vh;
+  --moment-2-y: 20vh;
+  --moment-0-scale: 1;
+  --moment-1-scale: 0.92;
+  --moment-2-scale: 0.92;
+  --stage-z: -120px;
+  --camera-depth: 0px;
+  --scroll-tilt-x: 0deg;
+  --scroll-tilt-y: 0deg;
+  --tunnel-opacity: 0.22;
+  --final-opacity: 0;
+  --final-scale: 0.7;
+  --final-blur: 18px;
+  height: 520svh;
+}
+
+.scroll-intro .launch-overlay {
+  overflow: hidden;
+  perspective: 1100px;
+  perspective-origin: 50% 50%;
+}
+
+.launch-narrative {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.launch-moment {
+  --moment-opacity: var(--moment-0-opacity);
+  --moment-y: var(--moment-0-y);
+  --moment-scale: var(--moment-0-scale);
+  position: absolute;
+  top: 50%;
+  left: clamp(26px, 7vw, 116px);
+  width: min(43vw, 690px);
+  opacity: var(--moment-opacity);
+  transform: translateY(calc(-50% + var(--moment-y))) scale(var(--moment-scale));
+  transform-origin: left center;
+  will-change: opacity, transform;
+}
+
+.launch-moment:nth-child(2) {
+  --moment-opacity: var(--moment-1-opacity);
+  --moment-y: var(--moment-1-y);
+  --moment-scale: var(--moment-1-scale);
+  right: clamp(30px, 7vw, 116px);
+  left: auto;
+  width: min(40vw, 650px);
+  text-align: right;
+  transform-origin: right center;
+}
+
+.launch-moment:nth-child(3) {
+  --moment-opacity: var(--moment-2-opacity);
+  --moment-y: var(--moment-2-y);
+  --moment-scale: var(--moment-2-scale);
+}
+
+.launch-moment__kicker {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 22px;
+  color: #879492;
+  font:
+    0.67rem/1 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.18em;
+}
+
+.launch-moment:nth-child(2) .launch-moment__kicker {
+  justify-content: flex-end;
+}
+
+.launch-moment__kicker span {
+  color: var(--site-green-strong);
+}
+
+.launch-moment__title {
+  display: grid;
+  gap: 0.03em;
+  margin: 0;
+  color: #f3f7f4;
+  font:
+    700 clamp(3.3rem, 6.9vw, 7.3rem) / 0.86 "IBM Plex Mono",
+    monospace;
+  letter-spacing: -0.09em;
+  text-shadow:
+    0 2px 0 #050708,
+    0 0 38px rgba(5, 7, 8, 0.9);
+}
+
+.launch-moment__title span {
+  display: block;
+}
+
+.launch-moment__title span:last-child {
+  color: var(--site-green);
+}
+
+.launch-moment--explore .launch-moment__title span:nth-child(2),
+.launch-moment--build .launch-moment__title span:nth-child(2) {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(142, 230, 177, 0.74);
+  text-shadow: 9px 10px 0 rgba(83, 215, 138, 0.05);
+}
+
+.scroll-intro .launch-stage {
+  top: 50%;
+  right: auto;
+  left: 50%;
+  z-index: 3;
+  width: min(84vw, 1080px);
+  opacity: var(--stage-opacity);
+  transform: translate3d(
+      calc(-50% + var(--stage-x)),
+      calc(-50% + var(--stage-y)),
+      var(--stage-z)
+    )
+    scale(var(--stage-scale)) rotateZ(var(--stage-rotate));
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transition: none;
+  will-change: transform;
+}
+
+.scroll-intro .launch-stage-frame {
+  transform-style: preserve-3d;
+}
+
+.scroll-intro .launch-scene {
+  transform: translate3d(var(--scene-x), var(--scene-y), 0)
+    rotateX(calc(var(--scene-rx) + var(--scroll-tilt-x)))
+    rotateY(calc(var(--scene-ry) + var(--scroll-tilt-y)))
+    rotateZ(var(--scene-scroll-rotate));
+  transform-style: preserve-3d;
+  transition: transform 100ms ease-out;
+}
+
+.launch-tunnel {
+  position: absolute;
+  inset: -12%;
+  opacity: var(--tunnel-opacity);
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.launch-tunnel-ring {
+  position: absolute;
+  inset: var(--ring-inset);
+  border: 1px solid rgba(142, 230, 177, 0.34);
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from var(--ring-rotate),
+    rgba(142, 230, 177, 0.28) 0deg 0.7deg,
+    transparent 0.7deg 10deg
+  );
+  box-shadow:
+    0 0 28px rgba(83, 215, 138, 0.09),
+    inset 0 0 34px rgba(83, 215, 138, 0.04);
+  opacity: clamp(0.12, calc(1 - var(--ring-index) * 0.08), 0.82);
+  transform: translateZ(calc(var(--ring-z) + var(--camera-depth)))
+    rotateZ(var(--ring-rotate));
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.scroll-intro .launch-core {
+  scale: var(--core-scale);
+  transition: scale 100ms linear;
+}
+
+.scroll-intro .launch-orbit--a {
+  scale: var(--orbit-a-scale);
+}
+
+.scroll-intro .launch-orbit--b {
+  scale: var(--orbit-b-scale);
+}
+
+.scroll-intro .launch-orbit--c {
+  scale: var(--orbit-c-scale);
+}
+
+.scroll-intro .launch-particle {
+  transform: translateZ(var(--particle-depth));
+}
+
+.scroll-intro .launch-tick {
+  height: clamp(13px, 1.7vw, 24px);
+  transform: rotate(var(--tick-angle)) translateY(-35vw);
+}
+
+.launch-final {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 8;
+  display: grid;
+  width: min(88vw, 1000px);
+  place-items: center;
+  color: #f5f8f6;
+  opacity: var(--final-opacity);
+  filter: blur(var(--final-blur));
+  text-align: center;
+  transform: translate(-50%, -50%) scale(var(--final-scale));
+  transform-origin: center;
+  pointer-events: none;
+  will-change: opacity, filter, transform;
+}
+
+.launch-final span,
+.launch-final i {
+  color: #91a09d;
+  font:
+    0.66rem/1 "IBM Plex Mono",
+    monospace;
+  font-style: normal;
+  letter-spacing: 0.28em;
+}
+
+.launch-final strong {
+  margin: 18px 0 22px;
+  color: var(--site-green);
+  font:
+    700 clamp(5rem, 15vw, 14rem) / 0.72 "IBM Plex Mono",
+    monospace;
+  letter-spacing: -0.1em;
+  text-shadow:
+    0 0 24px rgba(142, 230, 177, 0.25),
+    0 0 80px rgba(83, 215, 138, 0.14);
+}
+
+.scroll-intro[data-step="reveal"] .launch-hud {
+  color: rgba(142, 230, 177, 0.62);
+}
+
+@media (max-width: 980px) {
+  .scroll-intro .launch-stage {
+    width: min(104vw, 940px);
+  }
+
+  .launch-moment__title {
+    font-size: clamp(3rem, 8.1vw, 5.8rem);
+  }
+}
+
+@media (max-width: 720px) {
+  .scroll-intro {
+    height: 500svh;
+  }
+
+  .scroll-intro .launch-ascii {
+    top: 8%;
+    width: 150%;
+    font-size: 0.4rem;
+  }
+
+  .scroll-intro .launch-stage {
+    top: 57%;
+    width: 132vw;
+  }
+
+  .launch-moment,
+  .launch-moment:nth-child(2),
+  .launch-moment:nth-child(3) {
+    top: 30%;
+    right: auto;
+    left: 22px;
+    width: calc(100% - 44px);
+    text-align: left;
+    transform: translateY(calc(-50% + var(--moment-y)))
+      scale(var(--moment-scale));
+    transform-origin: left center;
+  }
+
+  .launch-moment:nth-child(2) .launch-moment__kicker {
+    justify-content: flex-start;
+  }
+
+  .launch-moment__kicker {
+    margin-bottom: 16px;
+    font-size: 0.58rem;
+  }
+
+  .launch-moment__title {
+    font-size: clamp(2.65rem, 12.4vw, 4.6rem);
+    line-height: 0.9;
+  }
+
+  .scroll-intro .launch-tick {
+    transform: rotate(var(--tick-angle)) translateY(-54vw);
+  }
+
+  .launch-final {
+    top: 46%;
+    width: calc(100% - 32px);
+  }
+
+  .launch-final strong {
+    margin-block: 16px;
+    font-size: clamp(4rem, 22vw, 7.2rem);
+  }
+
+  .launch-final i {
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-intro {
+    height: 400svh;
+  }
+
+  .launch-tunnel-ring {
+    transition: none;
+  }
+}
