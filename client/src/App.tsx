@@ -6,14 +6,12 @@ import { Route, Switch, Router as WouterRouter } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./context/LanguageContext";
-import IntroLoader from "./components/IntroLoader";
 import { RouteFallback } from "./components/RouteFallback";
 import Home from "./pages/Home";
 
 const ArchivesPage = lazy(() => import("./pages/ArchivesPage"));
 const ArchivePostPage = lazy(() => import("./pages/ArchivePostPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
-
 
 // Derive the base path from Vite's configured base URL for GitHub Pages support
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "") || "";
@@ -51,7 +49,6 @@ function App() {
         >
           <TooltipProvider>
             <Toaster />
-            <IntroLoader />
             <Router />
           </TooltipProvider>
         </ThemeProvider>

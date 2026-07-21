@@ -3412,3 +3412,335 @@ pre {
     transform: rotateX(-8deg) rotateY(12deg);
   }
 }
+
+/* ===== Scroll-linked quantum opening ===== */
+.scroll-intro {
+  --scroll-progress: 0;
+  --scroll-percent: 0%;
+  --copy-opacity: 1;
+  --copy-y: 0vh;
+  --copy-scale: 1;
+  --stage-x: 0vw;
+  --stage-y: 0vh;
+  --stage-scale: 1;
+  --stage-rotate: 0deg;
+  --scene-scroll-rotate: 0deg;
+  --stage-opacity: 1;
+  --grid-opacity: 0.28;
+  --grid-y: 28%;
+  --grid-scale: 1;
+  --scroll-cue-opacity: 1;
+  position: relative;
+  height: 280svh;
+  background: #050708;
+}
+
+.scroll-intro .launch-overlay {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: 100svh;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.scroll-intro .launch-grid {
+  opacity: var(--grid-opacity);
+  transform: rotateX(68deg) translateY(var(--grid-y)) scale(var(--grid-scale));
+}
+
+.scroll-intro .launch-ascii {
+  opacity: 0.22;
+  transform: translateY(calc(var(--scroll-progress) * -5vh));
+}
+
+.scroll-intro .launch-copy {
+  opacity: var(--copy-opacity);
+  transform: translateY(calc(-50% + var(--copy-y))) scale(var(--copy-scale));
+  transform-origin: left center;
+  transition: none;
+}
+
+.scroll-intro .launch-copy > * {
+  opacity: 0;
+}
+
+.scroll-intro.is-reduced-motion .launch-copy > * {
+  opacity: 1;
+}
+
+.launch-statement {
+  display: grid;
+  gap: 0.04em;
+  margin: 0;
+  color: #f4f7f5;
+  font:
+    700 clamp(3.35rem, 7.2vw, 7.4rem) / 0.84 "IBM Plex Mono",
+    monospace;
+  letter-spacing: -0.09em;
+}
+
+.launch-statement span:nth-child(2) {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(142, 230, 177, 0.64);
+  text-shadow: 10px 12px 0 rgba(83, 215, 138, 0.055);
+}
+
+.launch-statement span:last-child {
+  color: var(--site-green);
+}
+
+.scroll-intro .launch-stage {
+  opacity: var(--stage-opacity);
+  transform: translate3d(var(--stage-x), calc(-50% + var(--stage-y)), 0)
+    scale(var(--stage-scale)) rotate(var(--stage-rotate));
+  transform-origin: center;
+  transition: none;
+}
+
+.launch-stage-frame {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+}
+
+.scroll-intro .launch-scene {
+  transform: translate3d(var(--scene-x), var(--scene-y), 0)
+    rotateX(var(--scene-rx)) rotateY(var(--scene-ry))
+    rotateZ(var(--scene-scroll-rotate));
+  transition: transform 120ms ease-out;
+}
+
+.scroll-intro .launch-core {
+  gap: 18px;
+}
+
+.launch-core__nucleus {
+  position: relative;
+  display: grid;
+  width: clamp(38px, 5.1vw, 74px);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(223, 255, 237, 0.82);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #f4fff8 0 6%,
+    #8ee6b1 7% 14%,
+    rgba(83, 215, 138, 0.28) 15% 28%,
+    transparent 52%
+  );
+  box-shadow:
+    0 0 20px rgba(142, 230, 177, 0.72),
+    0 0 58px rgba(83, 215, 138, 0.35),
+    inset 0 0 22px rgba(142, 230, 177, 0.24);
+}
+
+.launch-core__nucleus i {
+  position: absolute;
+  width: 142%;
+  height: 38%;
+  border: 1px solid rgba(142, 230, 177, 0.66);
+  border-radius: 50%;
+}
+
+.launch-core__nucleus i:nth-child(2) {
+  transform: rotate(60deg);
+  border-color: rgba(93, 170, 191, 0.72);
+}
+
+.launch-core__nucleus i:nth-child(3) {
+  transform: rotate(-60deg);
+  border-color: rgba(231, 194, 113, 0.66);
+}
+
+.scroll-intro .launch-core__serial {
+  margin: 0;
+  text-align: center;
+}
+
+.launch-steps {
+  position: absolute;
+  top: 50%;
+  right: clamp(22px, 3.8vw, 54px);
+  z-index: 6;
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  color: #536260;
+  font:
+    0.58rem/1 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.13em;
+  list-style: none;
+  transform: translateY(-50%);
+}
+
+.launch-steps li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-items: center;
+  gap: 9px;
+  transition:
+    color 220ms ease,
+    transform 220ms ease;
+}
+
+.launch-steps li::before {
+  content: "";
+  position: absolute;
+  right: calc(100% + 10px);
+  width: 0;
+  height: 1px;
+  background: var(--site-green);
+  transition: width 220ms ease;
+}
+
+.launch-steps li span {
+  color: #35413f;
+}
+
+.scroll-intro[data-step="observe"] [data-step-name="observe"],
+.scroll-intro[data-step="entangle"] [data-step-name="entangle"],
+.scroll-intro[data-step="resolve"] [data-step-name="resolve"] {
+  color: var(--site-green);
+  transform: translateX(-8px);
+}
+
+.scroll-intro[data-step="observe"] [data-step-name="observe"]::before,
+.scroll-intro[data-step="entangle"] [data-step-name="entangle"]::before,
+.scroll-intro[data-step="resolve"] [data-step-name="resolve"]::before {
+  width: 22px;
+}
+
+.scroll-intro .launch-hud {
+  opacity: 0;
+}
+
+.scroll-intro.is-reduced-motion .launch-hud {
+  opacity: 1;
+}
+
+.scroll-intro .launch-progress-track {
+  display: block;
+  width: min(32vw, 360px);
+  height: 2px;
+  overflow: hidden;
+  background: #24342f;
+}
+
+.scroll-intro .launch-progress-track i {
+  display: block;
+  width: var(--scroll-percent);
+  height: 100%;
+  background: var(--site-green-strong);
+  box-shadow: 0 0 12px rgba(83, 215, 138, 0.7);
+}
+
+.launch-scroll {
+  position: absolute;
+  bottom: clamp(58px, 8vh, 92px);
+  left: clamp(22px, 4vw, 56px);
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 9px;
+  border: 0;
+  border-bottom: 1px solid rgba(142, 230, 177, 0.38);
+  background: transparent;
+  color: #a5b2b0;
+  font:
+    0.63rem/1 "IBM Plex Mono",
+    monospace;
+  letter-spacing: 0.16em;
+  opacity: var(--scroll-cue-opacity);
+}
+
+.launch-scroll svg {
+  width: 15px;
+  animation: launch-scroll-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes launch-scroll-pulse {
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+@media (max-width: 980px) {
+  .scroll-intro .launch-stage {
+    right: -20vw;
+    width: 74vw;
+  }
+
+  .launch-statement {
+    font-size: clamp(3.25rem, 9.5vw, 6rem);
+  }
+
+  .launch-steps {
+    top: auto;
+    right: 24px;
+    bottom: 84px;
+    transform: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .scroll-intro {
+    height: 250svh;
+  }
+
+  .scroll-intro .launch-copy {
+    top: 35%;
+  }
+
+  .launch-statement {
+    font-size: clamp(2.75rem, 14vw, 5rem);
+  }
+
+  .scroll-intro .launch-stage {
+    top: 64%;
+    right: -38vw;
+    width: 106vw;
+  }
+
+  .scroll-intro .launch-description {
+    margin-top: 22px;
+  }
+
+  .launch-steps {
+    display: none;
+  }
+
+  .scroll-intro .launch-hud {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .scroll-intro .launch-progress-track {
+    position: absolute;
+    right: 0;
+    bottom: -12px;
+    left: 0;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-intro {
+    height: 130svh;
+  }
+
+  .scroll-intro .launch-copy,
+  .scroll-intro .launch-stage,
+  .scroll-intro .launch-grid,
+  .scroll-intro .launch-ascii {
+    transform: none;
+  }
+
+  .launch-scroll svg {
+    animation: none;
+  }
+}

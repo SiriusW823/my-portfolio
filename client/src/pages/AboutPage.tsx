@@ -1,14 +1,12 @@
-import { BadgeCheck, ExternalLink, Github, MapPin } from "lucide-react";
+import { BadgeCheck, Github, Instagram, MapPin } from "lucide-react";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLanguage } from "@/context/LanguageContext";
-import { credlyBadges, credlyProfileUrl } from "@/data/credlyBadges";
 import { evidence, localize, profile, skillGroups } from "@/data/siteContent";
 
 export default function AboutPage() {
   const { language } = useLanguage();
   const isZh = language === "zh";
-  const assetBase = import.meta.env.BASE_URL;
 
   const evidenceSections = [
     {
@@ -53,6 +51,22 @@ export default function AboutPage() {
               <Github aria-hidden="true" />
               github.com/SiriusW823
             </a>
+            <a
+              href="https://www.credly.com/users/sing-yun-wu"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <BadgeCheck aria-hidden="true" />
+              credly.com/users/sing-yun-wu
+            </a>
+            <a
+              href="https://www.instagram.com/s1rius_w"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Instagram aria-hidden="true" />
+              instagram.com/s1rius_w
+            </a>
           </div>
         </header>
 
@@ -74,71 +88,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section
-          className="content-section credential-section"
-          aria-labelledby="credly-heading"
-        >
-          <div className="section-heading credential-heading">
-            <div>
-              <p className="terminal-label">verified / public</p>
-              <h2 id="credly-heading" className="terminal-heading">
-                02 / badges
-              </h2>
-            </div>
-            <a
-              className="text-link"
-              href={credlyProfileUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {isZh ? "查看公開 Credly 檔案" : "Open public Credly profile"}
-              <ExternalLink aria-hidden="true" />
-            </a>
-          </div>
-          <p className="credential-intro">
-            {isZh
-              ? "這些徽章由發證單位透過 Credly 驗證；點選任一徽章可前往公開檔案核對。"
-              : "These badges are issuer-verified through Credly. Open any badge to confirm it on the public profile."}
-          </p>
-          <div className="credly-badge-grid">
-            {credlyBadges.map(badge => (
-              <a
-                className="credly-badge-card"
-                href={credlyProfileUrl}
-                target="_blank"
-                rel="noreferrer"
-                key={badge.name}
-                aria-label={`${badge.name} — ${isZh ? "在 Credly 驗證" : "verify on Credly"}`}
-              >
-                <div className="credly-badge-card__image">
-                  <img
-                    src={`${assetBase}${badge.image}`}
-                    alt=""
-                    loading="lazy"
-                  />
-                </div>
-                <div className="credly-badge-card__copy">
-                  <span>
-                    <BadgeCheck aria-hidden="true" />
-                    {badge.issuer}
-                  </span>
-                  <h3>{badge.name}</h3>
-                  <time dateTime={badge.issued}>
-                    {isZh ? `發證 ${badge.issued}` : `Issued ${badge.issued}`}
-                  </time>
-                </div>
-                <ExternalLink
-                  className="credly-badge-card__link-icon"
-                  aria-hidden="true"
-                />
-              </a>
-            ))}
-          </div>
-        </section>
-
         <section className="content-section">
           <div className="section-heading section-heading--stacked">
-            <h2 className="terminal-heading">03 / evidence</h2>
+            <h2 className="terminal-heading">02 / evidence</h2>
           </div>
           <div className="evidence-grid">
             {evidenceSections.map(section => (

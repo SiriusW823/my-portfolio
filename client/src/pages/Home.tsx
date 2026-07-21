@@ -6,6 +6,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { Link } from "wouter";
+import IntroLoader from "@/components/IntroLoader";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { useLanguage } from "@/context/LanguageContext";
@@ -46,6 +47,7 @@ export default function Home() {
 
   return (
     <div className="site-page">
+      <IntroLoader />
       <SiteHeader active="home" />
       <main id="main-content" className="section-shell home-layout">
         <div className="home-feed">
