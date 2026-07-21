@@ -69,12 +69,12 @@ export default function IntroLoader() {
       );
       const stageScale = interpolateStops(
         progress,
-        [0.9, 1.35, 3.8, 1.7, 0.96]
+        [0.88, 1.18, 2.15, 1.45, 0.96]
       );
       const stageRotate = interpolateStops(progress, [0, 48, 126, 226, 332]);
-      const stageZ = interpolateStops(progress, [-120, 60, 340, -40, 40]);
-      const cameraDepth = interpolateStops(progress, [0, 240, 760, 1260, 1760]);
-      const coreScale = interpolateStops(progress, [1, 1.15, 1.7, 0.72, 1]);
+      const stageZ = interpolateStops(progress, [-80, -10, 80, -20, 20]);
+      const cameraDepth = interpolateStops(progress, [0, 170, 420, 700, 980]);
+      const coreScale = interpolateStops(progress, [1, 1.08, 1.35, 0.82, 1]);
       const finalVisibility = clamp((progress - 0.86) / 0.14);
       const activeMoment =
         progress < 0.19
@@ -125,17 +125,13 @@ export default function IntroLoader() {
       );
       root.style.setProperty("--grid-opacity", `${0.25 - progress * 0.1}`);
       root.style.setProperty("--grid-y", `${26 + progress * 22}%`);
-      root.style.setProperty("--grid-scale", `${1 + progress * 0.35}`);
+      root.style.setProperty("--grid-scale", `${1 + progress * 0.14}`);
       root.style.setProperty(
         "--scroll-cue-opacity",
         `${1 - clamp(progress * 1.8)}`
       );
       root.style.setProperty("--final-opacity", finalVisibility.toFixed(4));
       root.style.setProperty("--final-scale", `${0.7 + finalVisibility * 0.3}`);
-      root.style.setProperty(
-        "--final-blur",
-        `${((1 - finalVisibility) * 18).toFixed(2)}px`
-      );
 
       momentCenters.forEach((center, index) => {
         const distance = Math.abs(progress - center);
@@ -155,7 +151,9 @@ export default function IntroLoader() {
         );
       });
 
-      root.dataset.step = activeMoment;
+      if (root.dataset.step !== activeMoment) {
+        root.dataset.step = activeMoment;
+      }
     };
 
     const requestScrollUpdate = () => {
@@ -217,9 +215,9 @@ export default function IntroLoader() {
     const corePulse = animate(
       root.querySelector(".launch-core__nucleus") as Element,
       {
-        scale: [0.9, 1.1],
-        opacity: [0.7, 1],
-        duration: 1250,
+        scale: [0.96, 1.04],
+        opacity: [0.86, 1],
+        duration: 1650,
         alternate: true,
         loop: true,
         ease: "inOutSine",
@@ -322,14 +320,14 @@ H|0〉 → (|0〉+|1〉)/√2  /  BUILD · TEST · DOCUMENT
           <div className="launch-stage-frame">
             <div className="launch-scene">
               <div className="launch-tunnel">
-                {Array.from({ length: 9 }).map((_, index) => (
+                {Array.from({ length: 6 }).map((_, index) => (
                   <span
                     className="launch-tunnel-ring"
                     style={
                       {
                         "--ring-index": index,
-                        "--ring-z": `${-760 + index * 170}px`,
-                        "--ring-inset": `${index * 2.8}%`,
+                        "--ring-z": `${-620 + index * 170}px`,
+                        "--ring-inset": `${index * 4.2}%`,
                         "--ring-rotate": `${index * 19}deg`,
                       } as CSSProperties
                     }
@@ -351,11 +349,11 @@ H|0〉 → (|0〉+|1〉)/√2  /  BUILD · TEST · DOCUMENT
               <div className="launch-orbit launch-orbit--b" />
               <div className="launch-orbit launch-orbit--c" />
               <div className="launch-tick-ring">
-                {Array.from({ length: 48 }).map((_, index) => (
+                {Array.from({ length: 36 }).map((_, index) => (
                   <span
                     className="launch-tick"
                     style={
-                      { "--tick-angle": `${index * 7.5}deg` } as CSSProperties
+                      { "--tick-angle": `${index * 10}deg` } as CSSProperties
                     }
                     key={index}
                   />
@@ -363,13 +361,23 @@ H|0〉 → (|0〉+|1〉)/√2  /  BUILD · TEST · DOCUMENT
               </div>
               <div className="launch-core">
                 <span className="launch-core__nucleus">
-                  <i />
-                  <i />
-                  <i />
+                  <span className="launch-core__sphere">
+                    <span className="launch-core__shine" />
+                    <span className="launch-core__shadow" />
+                  </span>
+                  <i className="launch-core__shell launch-core__shell--a">
+                    <b />
+                  </i>
+                  <i className="launch-core__shell launch-core__shell--b">
+                    <b />
+                  </i>
+                  <i className="launch-core__shell launch-core__shell--c">
+                    <b />
+                  </i>
                 </span>
                 <span className="launch-core__serial">QBIT·823 / COHERENT</span>
               </div>
-              {Array.from({ length: 12 }).map((_, index) => (
+              {Array.from({ length: 8 }).map((_, index) => (
                 <span
                   className={`launch-particle launch-particle--${index % 8}`}
                   style={
