@@ -11,10 +11,6 @@ export const profile = {
     zh: "來自台灣的高中生，研究資安、量子運算與工程實作。",
     en: "A high school student in Taiwan exploring cybersecurity, quantum computing, and hands-on engineering.",
   },
-  current: {
-    zh: "自製 EIS 量測系統、量子啟發式分析與資安競賽紀錄",
-    en: "A self-built EIS measurement system, quantum-inspired analysis, and security competition notes",
-  },
 };
 
 export const evidence = {
@@ -41,7 +37,17 @@ export const evidence = {
 };
 
 export const skillGroups = [
-  { label: "build", items: ["Python", "TypeScript", "React", "Arduino", "ESP32", "Raspberry Pi"] },
+  {
+    label: "build",
+    items: [
+      "Python",
+      "TypeScript",
+      "React",
+      "Arduino",
+      "ESP32",
+      "Raspberry Pi",
+    ],
+  },
   { label: "research", items: ["Quantum Computing", "Machine Learning"] },
   { label: "security", items: ["Web Security", "CTF", "Linux"] },
 ];
